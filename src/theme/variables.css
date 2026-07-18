@@ -455,18 +455,21 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* --- Üst: Büyük zaman göstergesi --- */
-.circular-clock__top {
+/* --- Gövde: zaman + kadran yan yana --- */
+.circular-clock__body {
   display: flex;
-  align-items: flex-start;
-  padding: 20px 20px 12px;
+  align-items: center;
+  padding: 20px;
   background: #252729;
+  gap: 16px;
 }
 
-.circular-clock__time-display {
+/* Sol: zaman + AM/PM */
+.circular-clock__left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex-shrink: 0;
 }
 
 .circular-clock__time-digits {
@@ -478,14 +481,14 @@
 .circular-clock__time-digit {
   background: none;
   border: none;
-  font-size: 40px;
+  font-size: 38px;
   font-weight: 300;
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #5F6368;
   cursor: pointer;
-  padding: 0 4px;
-  border-radius: 6px;
-  transition: color 0.15s, background 0.15s;
+  padding: 0 2px;
+  border-radius: 4px;
+  transition: color 0.15s;
   line-height: 1;
 }
 
@@ -495,14 +498,14 @@
 }
 
 .circular-clock__time-colon {
-  font-size: 40px;
+  font-size: 38px;
   font-weight: 300;
   color: #5F6368;
-  padding: 0 2px;
+  padding: 0 1px;
   line-height: 1;
 }
 
-/* AM / PM butonları — zamanın altında yatay */
+/* AM / PM butonları */
 .circular-clock__ampm {
   display: flex;
   gap: 4px;
@@ -510,7 +513,7 @@
 }
 
 .circular-clock__ampm-btn {
-  padding: 4px 8px;
+  padding: 3px 8px;
   border: 1px solid #5F6368;
   border-radius: 4px;
   background: transparent;
@@ -519,7 +522,6 @@
   color: #5F6368;
   cursor: pointer;
   transition: all 0.15s;
-  line-height: 1.2;
 }
 
 .circular-clock__ampm-btn.active {
@@ -532,14 +534,12 @@
 .circular-clock__face {
   display: flex;
   justify-content: center;
-  padding: 12px 0 8px;
-  background: #2D2F33;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .circular-clock__face svg {
   display: block;
-  max-width: 100%;
-  height: auto;
 }
 
 /* --- Alt: İptal / Onayla --- */
@@ -548,6 +548,7 @@
   justify-content: flex-end;
   gap: 8px;
   padding: 10px 16px 14px;
+  background: #252729;
 }
 
 .circular-clock__cancel {

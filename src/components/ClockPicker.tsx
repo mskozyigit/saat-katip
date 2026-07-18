@@ -223,9 +223,10 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="circular-clock" role="dialog" aria-label="Saat seçici">
-        {/* --- Üst: Büyük zaman göstergesi + AM/PM --- */}
-        <div className="circular-clock__top">
-          <div className="circular-clock__time-display">
+        {/* --- Gövde: zaman + kadran yan yana --- */}
+        <div className="circular-clock__body">
+          {/* Sol: zaman + AM/PM */}
+          <div className="circular-clock__left">
             <div className="circular-clock__time-digits">
               <button
                 className={`circular-clock__time-digit${mode === 'hour' ? ' active' : ''}`}
@@ -252,10 +253,9 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
               >PM</button>
             </div>
           </div>
-        </div>
 
-        {/* --- Saat kadranı --- */}
-        <div className="circular-clock__face">
+          {/* Sağ: saat kadranı */}
+          <div className="circular-clock__face">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${SIZE} ${SIZE}`}
@@ -327,6 +327,7 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
             {/* Merkez nokta */}
             <circle cx={CX} cy={CY} r="5" fill={CLR.centerDot} style={{ pointerEvents: 'none' }} />
           </svg>
+        </div>
         </div>
 
         {/* --- Alt: İptal / Onayla --- */}
