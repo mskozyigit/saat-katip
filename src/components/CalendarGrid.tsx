@@ -89,7 +89,7 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
           </button>
           <button
             onClick={() => { setOffset(0); }}
-            style={{ background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', padding: '4px 8px', color: 'var(--color-primary)' }}
+            style={{ background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', padding: '4px 8px', color: 'var(--md-primary)' }}
           >
             Bugün
           </button>
