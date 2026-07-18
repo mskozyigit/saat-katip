@@ -186,20 +186,16 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
 export default function DailyEntryCard({ date, entries, onSave, onDelete, onClose }: DailyEntryCardProps) {
   const { generateSuggestions } = usePrediction();
   const [suggestions, setSuggestions] = useState<DailySuggestions | null>(null);
-  const [loaded, setLoaded] = useState(false);
   const [addingNew, setAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Onerileri asenkron yukle (mount'ta bir kere)
+  // Onerileri mount'ta bir kere yukle (basari/basarisiz fark etmez)
   useEffect(() => {
-    if (!loaded) {
-      generateSuggestions()
-        .then(s => { if (s) setSuggestions(s); })
-        .catch(() => { /* cold start veya hata - oneri yok */ })
-        .finally(() => setLoaded(true));
-    }
-  }, [loaded, generateSuggestions]);
+    generateSuggestions()
+      .then(s => { if (s) setSuggestions(s); })
+      .catch(() => { /* cold start - oneri yok */ });
+  }, []); // sadece mount'ta bir kere
 
   const handleSave = async (input: WorkEntryInput): Promise<WorkEntry> => {
     setSaving(true);
@@ -254,7 +250,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         );
       })}
 
-      {addingNew && loaded && <EntryForm key="new-form" date={date} entry={null} suggestions={suggestions}
+      {addingNew && <EntryForm key="new-form" date={date} entry={null} suggestions={suggestions}
         onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
 
       {!addingNew && (
