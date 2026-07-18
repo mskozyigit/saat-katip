@@ -580,14 +580,15 @@ ion-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-shrink: 1;
-  min-width: 0;
+  flex-shrink: 0;
+  width: 320px;
+  height: 320px;
 }
 
 .circular-clock__face svg {
   display: block;
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 100%;
 }
 
 /* --- Alt: İptal / Onayla --- */
@@ -602,7 +603,7 @@ ion-toolbar {
 /* ========================================================================
    Mobil uyumluluk: dar ekranda dikey dizilim
    ======================================================================== */
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   .circular-clock {
     width: 100%;
     max-width: 100vw;
@@ -611,7 +612,7 @@ ion-toolbar {
 
   .circular-clock__body {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     padding: 16px;
     gap: 12px;
   }
@@ -619,16 +620,17 @@ ion-toolbar {
   .circular-clock__left {
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 16px;
   }
 
   .circular-clock__time-digit {
-    font-size: 48px;
+    font-size: 42px;
     letter-spacing: -1px;
   }
 
   .circular-clock__time-colon {
-    font-size: 48px;
+    font-size: 42px;
   }
 
   .circular-clock__ampm {
@@ -637,24 +639,44 @@ ion-toolbar {
   }
 
   .circular-clock__ampm-btn {
-    font-size: 16px;
-    padding: 6px 12px;
+    font-size: 15px;
+    padding: 6px 10px;
   }
 
   .circular-clock__face {
-    flex-shrink: 1;
-    max-width: 320px;
-    margin: 0 auto;
+    width: 300px;
+    height: 300px;
+    flex-shrink: 0;
   }
 
   .circular-clock__footer {
-    justify-content: stretch;
+    justify-content: center;
     gap: 12px;
   }
 
   .circular-clock__cancel,
   .circular-clock__confirm {
     flex: 1;
+  }
+}
+
+@media (max-width: 360px) {
+  .circular-clock__face {
+    width: 260px;
+    height: 260px;
+  }
+
+  .circular-clock__time-digit {
+    font-size: 36px;
+  }
+
+  .circular-clock__time-colon {
+    font-size: 36px;
+  }
+
+  .circular-clock__ampm-btn {
+    font-size: 13px;
+    padding: 4px 8px;
   }
 }
 
