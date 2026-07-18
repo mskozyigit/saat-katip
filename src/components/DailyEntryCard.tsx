@@ -228,7 +228,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
   const [suggestions, setSuggestions] = useState<DailySuggestions | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Önceki kaydın verisiyle formu önceden doldur
+  // Önceki kaydın verisiyle formu önceden doldur (son kayıt)
   const lastEntry = entries.length > 0 ? entries[entries.length - 1] : null;
 
   // Onerileri mount'ta bir kere yukle (basari/basarisiz fark etmez)
