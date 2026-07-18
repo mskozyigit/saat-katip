@@ -1,14 +1,14 @@
 // ============================================================================
-// ClockPicker — Dairesel (Analog) Saat Seçici
+// ClockPicker — Dairesel (Analog) Saat Seçici (Clock Dial)
 // ============================================================================
-// Yuvarlak saat kadranı üzerinde saat ve dakika seçimi yapılır.
-// Mobil dokunma hedeflerine ve hem mouse hem touch etkileşime uygundur.
+// 12 saatlik çember + 60 dakikalık çember.
+// Mobil dokunma / mouse sürükleme ile seçim yapılır.
 // ============================================================================
 
 import { useState, useCallback, useEffect } from 'react';
 
 interface ClockPickerProps {
-  value: string;        // HH:mm formatında mevcut değer
+  value: string;        // HH:mm formatında mevcut değer (24 saat)
   onChange: (time: string) => void;
   onClose: () => void;
 }
@@ -16,7 +16,7 @@ interface ClockPickerProps {
 /** Derece → radyan */
 function toRad(deg: number): number { return (deg * Math.PI) / 180; }
 
-/** Bir noktanın dairenin merkezine göre açısını hesaplar (derece, 0 = üst) */
+/** Bir noktanın dairenin merkezine göre açısı (derece, 0 = üst, saat yönü) */
 function angleFromCenter(cx: number, cy: number, px: number, py: number): number {
   const dx = px - cx;
   const dy = py - cy;
@@ -26,58 +26,78 @@ function angleFromCenter(cx: number, cy: number, px: number, py: number): number
   return deg;
 }
 
-/** Saat numarasına göre kadrandaki açı */
-function hourToAngle(hour: number): number {
-  return (hour / 24) * 360;
+/** 24s → 12s (0→12, 13→1, ...) */
+function to12h(h24: number): number {
+  const h = h24 % 12;
+  return h === 0 ? 12 : h;
 }
 
-/** Açıya en yakın saati bul (24 saat) */
-function angleToHour(angle: number): number {
-  return Math.round((angle / 360) * 24) % 24;
+/** 12s + am/pm → 24s */
+function to24h(h12: number, isPM: boolean): number {
+  if (h12 === 12) return isPM ? 12 : 0;
+  return isPM ? h12 + 12 : h12;
 }
 
-/** Açıya en yakın dakikayı bul (0, 15, 30, 45) */
+/** 12 saatlik pozisyona göre açı (saat 12 üstte = 0°) */
+function hourToAngle(h12: number): number {
+  // 12 → 0°, 1 → 30°, 2 → 60°, ...
+  return ((h12 % 12) / 12) * 360;
+}
+
+/** Açı → 12 saat (1..12) */
+function angleTo12Hour(angle: number): number {
+  const h = Math.round((angle / 360) * 12) % 12;
+  return h === 0 ? 12 : h;
+}
+
+/** Dakika → açı (0 üstte) */
+function minuteToAngle(min: number): number {
+  return (min / 60) * 360;
+}
+
+/** Açı → dakika (0..59) */
 function angleToMinute(angle: number): number {
-  const mins = [0, 15, 30, 45];
-  const idx = Math.round((angle / 360) * 4) % 4;
-  return mins[idx];
+  return Math.round((angle / 360) * 60) % 60;
 }
 
 // ============================================================================
 
 export default function ClockPicker({ value, onChange, onClose }: ClockPickerProps) {
-  const [selectedHour, setSelectedHour] = useState<number>(() => {
+  const initialH24 = (() => {
     const h = parseInt(value.split(':')[0], 10);
     return isNaN(h) ? 9 : h;
-  });
-  const [selectedMinute, setSelectedMinute] = useState<number>(() => {
+  })();
+  const initialM = (() => {
     const m = parseInt(value.split(':')[1], 10);
-    if (isNaN(m)) return 0;
-    return [0, 15, 30, 45].reduce((a, b) => Math.abs(b - m) < Math.abs(a - m) ? b : a);
-  });
+    return isNaN(m) ? 0 : m;
+  })();
+
+  const [selectedHour24, setSelectedHour24] = useState(initialH24);
+  const [selectedMinute, setSelectedMinute] = useState(initialM);
   const [mode, setMode] = useState<'hour' | 'minute'>('hour');
 
-  const SIZE = 280;
+  const isPM = selectedHour24 >= 12;
+  const selectedHour12 = to12h(selectedHour24);
+
+  const SIZE = 300;
   const CX = SIZE / 2;
   const CY = SIZE / 2;
-  const R = 110;
-  const R_INNER = 70;
-  const HAND_R = R - 16;
+  const R = 120;           // saat/dakika işaretlerinin bulunduğu halka yarıçapı
+  const TICK_R = R - 10;   // tick işaretlerinin ucu
+  const HAND_R = R - 22;   // ibre ucu
 
-  // Seçimi onayla
   const confirm = useCallback(() => {
-    onChange(`${String(selectedHour).padStart(2, '0')}:${String(selectedMinute).padStart(2, '0')}`);
+    onChange(`${String(selectedHour24).padStart(2, '0')}:${String(selectedMinute).padStart(2, '0')}`);
     onClose();
-  }, [selectedHour, selectedMinute, onChange, onClose]);
+  }, [selectedHour24, selectedMinute, onChange, onClose]);
 
-  // Escape kapat
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, [onClose]);
 
-  // SVG ref callback — mousedown/touchstart ile etkileşim
+  // SVG etkileşim
   const svgRef = useCallback((el: SVGSVGElement | null) => {
     if (!el) return;
 
@@ -101,7 +121,8 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
       const { x, y } = getPos(e);
       const angle = angleFromCenter(CX, CY, x, y);
       if (mode === 'hour') {
-        setSelectedHour(angleToHour(angle));
+        const h12 = angleTo12Hour(angle);
+        setSelectedHour24(to24h(h12, isPM));
       } else {
         setSelectedMinute(angleToMinute(angle));
       }
@@ -131,33 +152,51 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
       el.removeEventListener('touchstart', handleDown);
       handleUp();
     };
-  }, [mode, CX, CY]);
+  }, [mode, isPM, CX, CY]);
 
-  // Saat ibresi ucu
-  const hourAngleDeg = hourToAngle(selectedHour);
-  const hourRad = toRad(hourAngleDeg - 90);
-  const handX = CX + HAND_R * Math.cos(hourRad);
-  const handY = CY + HAND_R * Math.sin(hourRad);
+  // --- İbre ---
+  const ibreAngle = mode === 'hour'
+    ? hourToAngle(selectedHour12)
+    : minuteToAngle(selectedMinute);
+  const ibreRad = toRad(ibreAngle - 90);
+  const handX = CX + HAND_R * Math.cos(ibreRad);
+  const handY = CY + HAND_R * Math.sin(ibreRad);
 
-  // Saat işaretleri (24 saat)
-  const hourMarkers = Array.from({ length: 24 }, (_, i) => {
-    const angle = hourToAngle(i);
+  // --- Saat işaretleri (12 adet) ---
+  const hourMarkers = Array.from({ length: 12 }, (_, i) => {
+    const h12 = i === 0 ? 12 : i; // 12, 1, 2, ..., 11
+    const angle = hourToAngle(h12);
     const rad = toRad(angle - 90);
     const tx = CX + R * Math.cos(rad);
     const ty = CY + R * Math.sin(rad);
-    const isSelected = i === selectedHour && mode === 'hour';
-    return { i, tx, ty, isSelected };
+    const isSelected = mode === 'hour' && h12 === selectedHour12;
+    return { label: String(h12), tx, ty, isSelected };
   });
 
-  // Dakika işaretleri
-  const minuteMarkers = [0, 15, 30, 45].map((m, idx) => {
-    const angle = (idx / 4) * 360;
+  // --- Dakika işaretleri (60 adet) ---
+  const minuteMarkers = Array.from({ length: 60 }, (_, m) => {
+    const angle = minuteToAngle(m);
     const rad = toRad(angle - 90);
-    const tx = CX + R_INNER * Math.cos(rad);
-    const ty = CY + R_INNER * Math.sin(rad);
-    const isSelected = m === selectedMinute && mode === 'minute';
-    return { m, tx, ty, isSelected };
+    // Her 5. dakikada uzun çizgi + rakam, diğerlerinde kısa çizgi
+    const isMajor = m % 5 === 0;
+    const rStart = isMajor ? R - 8 : R - 4;
+    const rEnd = R;
+    const x1 = CX + rStart * Math.cos(rad);
+    const y1 = CY + rStart * Math.sin(rad);
+    const x2 = CX + rEnd * Math.cos(rad);
+    const y2 = CY + rEnd * Math.sin(rad);
+    // Rakam pozisyonu (halkanın biraz içinde)
+    const lr = R - 16;
+    const lx = CX + lr * Math.cos(rad);
+    const ly = CY + lr * Math.sin(rad);
+    const isSelected = mode === 'minute' && m === selectedMinute;
+    return { m, x1, y1, x2, y2, lx, ly, isMajor, isSelected };
   });
+
+  // AM/PM toggle
+  const toggleAMPM = () => {
+    setSelectedHour24(to24h(selectedHour12, !isPM));
+  };
 
   return (
     <div
@@ -176,74 +215,99 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
             viewBox={`0 0 ${SIZE} ${SIZE}`}
             width={SIZE}
             height={SIZE}
-            style={{ touchAction: 'none', cursor: 'pointer' }}
+            style={{ touchAction: 'none', cursor: 'pointer', display: 'block' }}
           >
-            {/* Dış halka */}
-            <circle cx={CX} cy={CY} r={R} fill="none" stroke="#E5E7EB" strokeWidth="28" />
-            {/* İç halka */}
-            <circle cx={CX} cy={CY} r={R_INNER} fill="none" stroke="#F3F4F6" strokeWidth="20" />
+            {/* Halka arkaplanı */}
+            <circle cx={CX} cy={CY} r={R} fill="none" stroke="#F3F4F6" strokeWidth="32" />
 
-            {/* Saat rakamları */}
-            {hourMarkers.map(({ i, tx, ty, isSelected }) => (
-              <g key={`h-${i}`}>
-                {isSelected && <circle cx={tx} cy={ty} r="18" fill="#2563EB" opacity="0.15" />}
-                <text
-                  x={tx} y={ty}
-                  textAnchor="middle" dominantBaseline="central"
-                  fontSize={i < 10 ? 12 : 11}
-                  fontWeight={isSelected ? 700 : 400}
-                  fill={isSelected ? '#2563EB' : '#6B7280'}
-                  style={{ pointerEvents: 'none', userSelect: 'none' }}
-                >
-                  {String(i).padStart(2, '0')}
-                </text>
-              </g>
-            ))}
+            {mode === 'hour' ? (
+              /* ---- SAAT MODU: 12 rakam ---- */
+              <>
+                {hourMarkers.map(({ label, tx, ty, isSelected }) => (
+                  <g key={`h-${label}`}>
+                    {isSelected && (
+                      <circle cx={tx} cy={ty} r="22" fill="#2563EB" opacity="0.12" />
+                    )}
+                    <text
+                      x={tx} y={ty}
+                      textAnchor="middle" dominantBaseline="central"
+                      fontSize={18}
+                      fontWeight={isSelected ? 700 : 400}
+                      fill={isSelected ? '#2563EB' : '#374151'}
+                      style={{ pointerEvents: 'none', userSelect: 'none' }}
+                    >
+                      {label}
+                    </text>
+                  </g>
+                ))}
+              </>
+            ) : (
+              /* ---- DAKİKA MODU: 60 çizgi ---- */
+              <>
+                {minuteMarkers.map(({ m, x1, y1, x2, y2, lx, ly, isMajor, isSelected }) => (
+                  <g key={`m-${m}`}>
+                    {/* Seçili dakika highlight */}
+                    {isSelected && (
+                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r="20" fill="#2563EB" opacity="0.15" />
+                    )}
+                    {/* Çizgi */}
+                    <line
+                      x1={x1} y1={y1} x2={x2} y2={y2}
+                      stroke={isSelected ? '#2563EB' : isMajor ? '#9CA3AF' : '#D1D5DB'}
+                      strokeWidth={isMajor ? 2 : 1}
+                      strokeLinecap="round"
+                      style={{ pointerEvents: 'none' }}
+                    />
+                    {/* 5'in katlarında rakam */}
+                    {isMajor && (
+                      <text
+                        x={lx} y={ly}
+                        textAnchor="middle" dominantBaseline="central"
+                        fontSize={11}
+                        fontWeight={isSelected ? 700 : 500}
+                        fill={isSelected ? '#2563EB' : '#6B7280'}
+                        style={{ pointerEvents: 'none', userSelect: 'none' }}
+                      >
+                        {String(m).padStart(2, '0')}
+                      </text>
+                    )}
+                  </g>
+                ))}
+              </>
+            )}
 
-            {/* Dakika rakamları */}
-            {minuteMarkers.map(({ m, tx, ty, isSelected }) => (
-              <g key={`m-${m}`}>
-                {isSelected && <circle cx={tx} cy={ty} r="16" fill="#2563EB" opacity="0.2" />}
-                <text
-                  x={tx} y={ty}
-                  textAnchor="middle" dominantBaseline="central"
-                  fontSize={14}
-                  fontWeight={isSelected ? 700 : 500}
-                  fill={isSelected ? '#2563EB' : '#9CA3AF'}
-                  style={{ pointerEvents: 'none', userSelect: 'none' }}
-                >
-                  {String(m).padStart(2, '0')}
-                </text>
-              </g>
-            ))}
-
-            {/* Merkez */}
-            <circle cx={CX} cy={CY} r="38" fill="white" stroke="#E5E7EB" strokeWidth="1" />
+            {/* Merkez: seçili zaman */}
+            <circle cx={CX} cy={CY} r="44" fill="white" stroke="#E5E7EB" strokeWidth="1" />
             <text
-              x={CX} y={CY - 5} textAnchor="middle" dominantBaseline="central"
-              fontSize={20} fontWeight={700} fill="#1F2937"
+              x={CX} y={CY - 6}
+              textAnchor="middle" dominantBaseline="central"
+              fontSize={24} fontWeight={700} fill="#1F2937"
               style={{ pointerEvents: 'none', userSelect: 'none' }}
             >
-              {String(selectedHour).padStart(2, '0')}:{String(selectedMinute).padStart(2, '0')}
+              {String(selectedHour24).padStart(2, '0')}:{String(selectedMinute).padStart(2, '0')}
             </text>
             <text
-              x={CX} y={CY + 15} textAnchor="middle" dominantBaseline="central"
+              x={CX} y={CY + 16}
+              textAnchor="middle" dominantBaseline="central"
               fontSize={10} fill="#9CA3AF"
               style={{ pointerEvents: 'none', userSelect: 'none' }}
             >
               {mode === 'hour' ? 'saat seç' : 'dakika seç'}
             </text>
 
-            {/* İbre */}
-            {mode === 'hour' && (
-              <line x1={CX} y1={CY} x2={handX} y2={handY}
-                stroke="#2563EB" strokeWidth="3" strokeLinecap="round"
-                style={{ pointerEvents: 'none' }} />
-            )}
+            {/* İbre (ortadan seçili değere doğru çizgi) */}
+            <line
+              x1={CX} y1={CY}
+              x2={handX} y2={handY}
+              stroke="#2563EB" strokeWidth="3" strokeLinecap="round"
+              style={{ pointerEvents: 'none' }}
+            />
+            {/* İbre ucu noktası */}
+            <circle cx={handX} cy={handY} r="8" fill="#2563EB" style={{ pointerEvents: 'none' }} />
           </svg>
         </div>
 
-        {/* Mod butonları */}
+        {/* Mod + AM/PM */}
         <div className="circular-clock__modes">
           <button
             className={`circular-clock__mode-btn${mode === 'hour' ? ' active' : ''}`}
@@ -253,6 +317,11 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
             className={`circular-clock__mode-btn${mode === 'minute' ? ' active' : ''}`}
             onClick={() => setMode('minute')}
           >Dakika</button>
+          {mode === 'hour' && (
+            <button className="circular-clock__mode-btn ampm" onClick={toggleAMPM}>
+              {isPM ? 'ÖS' : 'ÖÖ'}
+            </button>
+          )}
         </div>
 
         <div className="circular-clock__footer">
