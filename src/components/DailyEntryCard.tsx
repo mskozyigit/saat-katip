@@ -137,8 +137,8 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
 
   return (
     <div style={{ border: '1px solid var(--md-outline-variant)', borderRadius: 12, padding: 16, marginBottom: 12 }}>
-      <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: isNew ? 'var(--md-primary)' : 'var(--md-on-surface)' }}>
-        {isNew ? 'Yeni Kayıt' : 'Kaydı Düzenle'}
+      <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: 'var(--md-primary)' }}>
+        Yeni Kayıt
       </div>
 
       <div style={{ marginBottom: 12 }}>
@@ -226,10 +226,10 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
 export default function DailyEntryCard({ date, entries, onSave, onDelete, onClose }: DailyEntryCardProps) {
   const { generateSuggestions } = usePrediction();
   const [suggestions, setSuggestions] = useState<DailySuggestions | null>(null);
-  // Kayıt yoksa form otomatik açık gelsin
-  const [addingNew, setAddingNew] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Önceki kaydın verisiyle formu önceden doldur
+  const lastEntry = entries.length > 0 ? entries[entries.length - 1] : null;
 
   // Onerileri mount'ta bir kere yukle (basari/basarisiz fark etmez)
   useEffect(() => {
@@ -239,28 +239,17 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
       .catch(() => { /* cold start - oneri yok */ });
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // sadece mount'ta bir kere
+  }, []);
 
   const handleSave = async (input: WorkEntryInput): Promise<WorkEntry> => {
     setSaving(true);
     try {
-      const result = await onSave(input);
-      if (!input.id) {
-        // Yeni kayıt → overlay'i kapat
-        onClose();
-      } else {
-        // Düzenleme → listeye dön
-        setAddingNew(false);
-        setEditingId(null);
-      }
+      // Her zaman yeni kayıt olarak kaydet (id'yi temizle)
+      const result = await onSave({ ...input, id: undefined });
+      onClose();
       return result;
     }
     finally { setSaving(false); }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Bu kaydi silmek istediginize emin misiniz?')) return;
-    await onDelete(id);
   };
 
   const dateDisplay = (() => {
@@ -277,43 +266,15 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
     <div className="daily-entry-card">
       <h3>{dateDisplay}</h3>
 
-      {entries.map(entry => {
-        const t = extractTime(entry);
-        if (editingId === entry.id) {
-          return <EntryForm key={entry.id} date={date} entry={entry} suggestions={null}
-            onSave={handleSave} onCancel={() => setEditingId(null)} saving={saving} />;
-        }
-        return (
-          <div key={entry.id} style={{
-            border: '1px solid var(--md-outline-variant)', borderRadius: 12, padding: 14, marginBottom: 10,
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          }}>
-            <div>
-              <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--md-on-surface)' }}>
-                {t.start} → {t.end} {t.isNextDay && <span className="next-day-badge">+1 gün</span>}
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--md-on-surface-variant)', marginTop: 2 }}>
-                Mola: {entry.break_minutes} dk · Toplam: {formatMinutes(entry.total_minutes)}
-              </div>
-            </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={() => setEditingId(entry.id)} className="md-ripple"
-                style={{ background: 'var(--md-surface-container-high)', border: 'none', borderRadius: 8, padding: '10px 12px', cursor: 'pointer', minWidth: 48, minHeight: 48 }}>✏️</button>
-              <button onClick={() => handleDelete(entry.id)} className="md-ripple"
-                style={{ background: 'var(--md-error-container)', border: 'none', borderRadius: 8, padding: '10px 12px', cursor: 'pointer', minWidth: 48, minHeight: 48 }}>🗑️</button>
-            </div>
-          </div>
-        );
-      })}
-
-      {addingNew && <EntryForm key="new-form" date={date} entry={null} suggestions={suggestions}
-        onSave={handleSave} onCancel={() => onClose()} saving={saving} />}
-
-      {!addingNew && (
-        <div className="card-actions" style={{ marginTop: 16 }}>
-          <button className="btn-cancel md-ripple" onClick={onClose} style={{ width: '100%' }}>İptal</button>
-        </div>
-      )}
+      <EntryForm
+        key={date}
+        date={date}
+        entry={lastEntry}
+        suggestions={lastEntry ? null : suggestions}
+        onSave={handleSave}
+        onCancel={() => onClose()}
+        saving={saving}
+      />
     </div>
   );
 }
