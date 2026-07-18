@@ -6,7 +6,7 @@
 // Gün sütununun tamamı tıklanabilir.
 // ============================================================================
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import type { CalendarViewMode, WorkEntry } from '../types';
 import { useServerTime } from '../hooks/useServerTime';
 
@@ -28,8 +28,21 @@ const DAY_NAMES = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 
 export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps) {
   const [viewMode, setViewMode] = useState<CalendarViewMode>('7day');
-  const [offset, setOffset] = useState(0); // bugünden kaç gün ileri/geri
-  const { now: serverNow } = useServerTime(); // Clock Skew koruması
+  const [offset, setOffset] = useState(0);
+  const { now: serverNow } = useServerTime();
+  const touchStartX = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 60) {
+      const step = viewMode === '1day' ? 1 : viewMode === '3day' ? 3 : 7;
+      setOffset(o => o + (diff > 0 ? step : -step));
+    }
+  };
 
   const days = useMemo(() => {
     // Sunucu zamanını kullanarak "bugün"ü belirle (cihaz saati hatalı olabilir)
@@ -122,7 +135,7 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
       </div>
 
       {/* Grid gövdesi */}
-      <div className="calendar-body">
+      <div className="calendar-body" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         {/* Sol saat ekseni */}
         <div className="time-axis">
           {HOUR_RANGE.map((hour) => (

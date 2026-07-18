@@ -127,6 +127,7 @@ export default function HomePage() {
 
       {/* Günlük Kayıt Modalı — alt sayfa (bottom sheet) */}
       <IonModal
+        key={selectedDate ?? 'closed'}
         isOpen={selectedDate !== null}
         onDidDismiss={handleCloseModal}
         initialBreakpoint={0.9}
