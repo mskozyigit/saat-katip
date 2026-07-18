@@ -442,8 +442,8 @@
 .circular-clock {
   background: #2D2F33;
   border-radius: 16px;
-  width: 300px;
-  max-width: 90vw;
+  width: 420px;
+  max-width: 94vw;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
   animation: slideUp 0.2s ease;
   overflow: hidden;
@@ -461,7 +461,7 @@
   align-items: center;
   padding: 20px;
   background: #252729;
-  gap: 16px;
+  gap: 20px;
 }
 
 /* Sol: zaman + AM/PM */
@@ -481,8 +481,8 @@
 .circular-clock__time-digit {
   background: none;
   border: none;
-  font-size: 38px;
-  font-weight: 300;
+  font-size: 72px;
+  font-weight: 200;
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #5F6368;
   cursor: pointer;
@@ -490,16 +490,17 @@
   border-radius: 4px;
   transition: color 0.15s;
   line-height: 1;
+  letter-spacing: -2px;
 }
 
 .circular-clock__time-digit.active {
   color: #E8EAED;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .circular-clock__time-colon {
-  font-size: 38px;
-  font-weight: 300;
+  font-size: 72px;
+  font-weight: 200;
   color: #5F6368;
   padding: 0 1px;
   line-height: 1;
@@ -508,20 +509,21 @@
 /* AM / PM butonları */
 .circular-clock__ampm {
   display: flex;
-  gap: 4px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .circular-clock__ampm-btn {
-  padding: 3px 8px;
+  padding: 8px 16px;
   border: 1px solid #5F6368;
-  border-radius: 4px;
+  border-radius: 6px;
   background: transparent;
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   color: #5F6368;
   cursor: pointer;
   transition: all 0.15s;
+  line-height: 1.2;
 }
 
 .circular-clock__ampm-btn.active {
@@ -535,11 +537,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .circular-clock__face svg {
   display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* --- Alt: İptal / Onayla --- */
