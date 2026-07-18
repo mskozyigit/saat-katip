@@ -9,7 +9,6 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonModal,
   IonButtons,
   IonButton,
   IonIcon,
@@ -125,44 +124,59 @@ export default function HomePage() {
         </IonFab>
       </IonContent>
 
-      {/* Günlük Kayıt Modalı — alt sayfa (bottom sheet) */}
+      {/* Günlük Kayıt — React overlay (Ionic modal değil, tam kontrol) */}
       {selectedDate !== null && (
-      <IonModal
-        isOpen={true}
-        onIonModalDidDismiss={() => setSelectedDate(null)}
-        initialBreakpoint={0.9}
-        breakpoints={[0, 0.6, 0.9]}
-        handle={false}
-      >
-        <IonHeader className="ion-no-border">
-          <IonToolbar>
-            <IonTitle className="ion-text-center">
-              Günlük Kayıt {dayEntries.length > 0 ? `(${dayEntries.length})` : ''}
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <div style={{
-          flex: 1,
-          overflow: 'auto',
-          background: 'var(--md-surface-container-lowest)',
+          position: 'fixed', inset: 0, zIndex: 1000,
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+          background: 'rgba(0,0,0,0.5)',
         }}>
-          {modalLoading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
-              <IonSpinner />
+          {/* Backdrop tıklama ile kapatma */}
+          <div style={{ position: 'absolute', inset: 0 }} onClick={handleCloseModal} />
+          
+          {/* İçerik kartı — bottom sheet */}
+          <div style={{
+            position: 'relative', zIndex: 1,
+            width: '100%', maxWidth: 600, maxHeight: '90vh',
+            background: 'var(--md-surface-container-lowest)',
+            borderTopLeftRadius: 20, borderTopRightRadius: 20,
+            display: 'flex', flexDirection: 'column',
+            overflow: 'hidden',
+            boxShadow: '0 -4px 20px rgba(0,0,0,0.2)',
+          }}>
+            {/* Header */}
+            <div style={{
+              padding: '16px 20px', borderBottom: '1px solid var(--md-outline-variant)',
+              textAlign: 'center', fontSize: 'var(--md-typescale-title-large)',
+              fontWeight: 500, color: 'var(--md-on-surface)',
+              background: 'var(--md-surface-container-lowest)',
+            }}>
+              Günlük Kayıt {dayEntries.length > 0 ? `(${dayEntries.length})` : ''}
             </div>
-          ) : (
-            <ErrorBoundary>
-              <DailyEntryCard
-                date={selectedDate!}
-                entries={dayEntries}
-                onSave={handleSave}
-                onDelete={handleDelete}
-                onClose={handleCloseModal}
-              />
-            </ErrorBoundary>
-          )}
+
+            {/* İçerik */}
+            <div style={{
+              flex: 1, overflow: 'auto',
+              background: 'var(--md-surface-container-lowest)',
+            }}>
+              {modalLoading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
+                  <IonSpinner />
+                </div>
+              ) : (
+                <ErrorBoundary>
+                  <DailyEntryCard
+                    date={selectedDate}
+                    entries={dayEntries}
+                    onSave={handleSave}
+                    onDelete={handleDelete}
+                    onClose={handleCloseModal}
+                  />
+                </ErrorBoundary>
+              )}
+            </div>
+          </div>
         </div>
-      </IonModal>
       )}
     </IonPage>
   );
