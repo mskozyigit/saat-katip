@@ -400,7 +400,9 @@ ion-fab-button {
 }
 
 .time-input {
-  flex: 1;
+  width: 110px;
+  max-width: 110px;
+  flex-shrink: 0;
   padding: 14px var(--md-spacing-16);
   border: 1px solid var(--md-outline);
   border-radius: var(--md-radius-sm);
@@ -409,6 +411,7 @@ ion-fab-button {
   transition: border-color 0.2s ease;
   background: var(--md-surface-container-lowest);
   min-height: var(--md-touch-comfortable);
+  text-align: center;
 }
 
 .time-input:focus {
