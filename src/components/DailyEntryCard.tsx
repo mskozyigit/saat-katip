@@ -89,7 +89,10 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
     et ? et.end : suggestions?.end?.value as string ?? '');
   const [breakMinutes, setBreakMinutes] = useState(() =>
     entry ? entry.break_minutes : suggestions?.break?.value as number ?? 0);
-  const [cpField, setCpField] = useState<'start' | 'end' | null>(null);
+  const [cpField, setCpField] = useState<'start' | 'end' | null>(() =>
+    // Yeni kayıtta başlangıç saati boşsa → otomatik saat kadranını aç
+    isNew && !(suggestions?.start?.value) ? 'start' : null
+  );
   const [touched, setTouched] = useState<Set<string>>(() =>
     entry ? new Set(['start', 'end', 'break']) : new Set());
 
