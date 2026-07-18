@@ -199,7 +199,8 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
 export default function DailyEntryCard({ date, entries, onSave, onDelete, onClose }: DailyEntryCardProps) {
   const { generateSuggestions } = usePrediction();
   const [suggestions, setSuggestions] = useState<DailySuggestions | null>(null);
-  const [addingNew, setAddingNew] = useState(false);
+  // Kayıt yoksa form otomatik açık gelsin
+  const [addingNew, setAddingNew] = useState(entries.length === 0);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -243,16 +244,6 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
     <div className="daily-entry-card">
       <h3>{dateDisplay}</h3>
 
-      {entries.length === 0 && !addingNew && (
-        <div style={{
-          textAlign: 'center', padding: '24px 16px', color: '#9CA3AF',
-          fontSize: 14, lineHeight: 1.6,
-        }}>
-          Bu güne ait henüz bir kayıt yok.<br />
-          Aşağıdaki butona tıklayarak yeni kayıt ekleyebilirsiniz.
-        </div>
-      )}
-
       {entries.map(entry => {
         const t = extractTime(entry);
         if (editingId === entry.id) {
@@ -288,7 +279,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
       {!addingNew && (
         <button onClick={() => setAddingNew(true)} className="add-entry-btn">
           <span style={{ fontSize: 22, marginRight: 8, fontWeight: 300 }}>+</span>
-          Çalışma Ekle
+          {entries.length === 0 ? 'Çalışma Ekle' : 'Yeni Kayıt Ekle'}
         </button>
       )}
 

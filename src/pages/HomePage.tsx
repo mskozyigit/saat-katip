@@ -141,17 +141,7 @@ export default function HomePage() {
           flex: 1,
           overflow: 'auto',
           background: '#ffffff',
-          padding: 20,
-          display: 'flex',
-          flexDirection: 'column',
         }}>
-          {/* DEBUG: Her zaman görünür test içeriği */}
-          <p style={{ color: 'red', fontWeight: 'bold', fontSize: 18, margin: 0 }}>
-            İçerik alanı çalışıyor! Tarih: {selectedDate}
-          </p>
-          <p style={{ color: '#6B7280', fontSize: 13, margin: '4px 0 16px' }}>
-            modalLoading: {String(modalLoading)} | Kayıt sayısı: {dayEntries.length}
-          </p>
           {modalLoading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
               <IonSpinner />
