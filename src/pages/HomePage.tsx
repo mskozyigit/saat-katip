@@ -140,7 +140,7 @@ export default function HomePage() {
         <div style={{
           flex: 1,
           overflow: 'auto',
-          background: '#ffffff',
+          background: 'var(--md-surface-container-lowest)',
         }}>
           {modalLoading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>

@@ -82,20 +82,23 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
       <div className="calendar-header">
         <div className="calendar-header__nav">
           <button
+            className="md-ripple"
             onClick={() => setOffset((o) => o - (viewMode === '1day' ? 1 : viewMode === '3day' ? 3 : 7))}
-            style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', padding: '4px 8px' }}
+            style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', minWidth: 48, minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             ←
           </button>
           <button
+            className="md-ripple"
             onClick={() => { setOffset(0); }}
-            style={{ background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', padding: '4px 8px', color: 'var(--md-primary)' }}
+            style={{ background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', minWidth: 48, minHeight: 48, color: 'var(--md-primary)', fontWeight: 500 }}
           >
             Bugün
           </button>
           <button
+            className="md-ripple"
             onClick={() => setOffset((o) => o + (viewMode === '1day' ? 1 : viewMode === '3day' ? 3 : 7))}
-            style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', padding: '4px 8px' }}
+            style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', minWidth: 48, minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             →
           </button>
@@ -109,7 +112,7 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
           {(['1day', '3day', '7day'] as CalendarViewMode[]).map((mode) => (
             <button
               key={mode}
-              className={viewMode === mode ? 'active' : ''}
+              className={`md-ripple${viewMode === mode ? ' active' : ''}`}
               onClick={() => setViewMode(mode)}
             >
               {mode === '1day' ? '1 Gün' : mode === '3day' ? '3 Gün' : '1 Hafta'}

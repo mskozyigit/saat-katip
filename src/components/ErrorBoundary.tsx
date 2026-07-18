@@ -34,24 +34,26 @@ export default class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return this.props.fallback ?? (
-        <div style={{ padding: 24, textAlign: 'center', color: '#DC2626' }}>
-          <p style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>
+        <div style={{ padding: 24, textAlign: 'center', color: 'var(--md-error)' }}>
+          <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 8, color: 'var(--md-on-surface)' }}>
             ⚠️ Bir hata oluştu
           </p>
-          <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>
+          <p style={{ fontSize: 13, color: 'var(--md-on-surface-variant)', marginBottom: 16 }}>
             {this.state.errorMessage}
           </p>
           <button
             onClick={() => this.setState({ hasError: false, errorMessage: '' })}
+            className="md-ripple"
             style={{
-              padding: '10px 20px',
-              background: '#2563EB',
-              color: 'white',
+              padding: '10px 24px',
+              background: 'var(--md-primary)',
+              color: 'var(--md-on-primary)',
               border: 'none',
-              borderRadius: 8,
+              borderRadius: 24,
               fontSize: 14,
-              fontWeight: 600,
+              fontWeight: 500,
               cursor: 'pointer',
+              minHeight: 48,
             }}
           >
             Tekrar Dene

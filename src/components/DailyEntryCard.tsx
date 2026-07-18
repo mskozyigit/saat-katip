@@ -133,8 +133,8 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
   };
 
   return (
-    <div style={{ border: '1px solid #E5E7EB', borderRadius: 10, padding: 16, marginBottom: 12 }}>
-      <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12, color: isNew ? '#2563EB' : '#1F2937' }}>
+    <div style={{ border: '1px solid var(--md-outline-variant)', borderRadius: 12, padding: 16, marginBottom: 12 }}>
+      <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: isNew ? 'var(--md-primary)' : 'var(--md-on-surface)' }}>
         {isNew ? '🆕 Yeni Kayıt' : '✏️ Kaydı Düzenle'}
       </div>
 
@@ -145,7 +145,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
             type="text" inputMode="numeric" placeholder="SS:DD" value={startTime}
             onChange={e => { ht('start'); setStartTime(formatTimeInput(e.target.value)); }}
             onFocus={() => ht('start')} maxLength={5} />
-          <button className="clock-picker-btn" onClick={() => { ht('start'); setCpField('start'); }}>🕐</button>
+          <button className="clock-picker-btn md-ripple" onClick={() => { ht('start'); setCpField('start'); }}>🕐</button>
         </div>
       </div>
 
@@ -155,7 +155,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
           {[15, 30, 45, 60].map(min => {
             const sel = breakMinutes === min;
             const sg = isSugg('break', breakMinutes) && sel;
-            return <button key={min} className={`break-btn${sel && !sg ? ' selected' : ''}${sg ? ' suggestion-selected' : ''}`}
+            return <button key={min} className={`break-btn md-ripple${sel && !sg ? ' selected' : ''}${sg ? ' suggestion-selected' : ''}`}
               onClick={() => { ht('break'); setBreakMinutes(sel ? 0 : min); }}>{min} dk</button>;
           })}
         </div>
@@ -171,7 +171,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
             type="text" inputMode="numeric" placeholder="SS:DD" value={endTime}
             onChange={e => { ht('end'); setEndTime(formatTimeInput(e.target.value)); }}
             onFocus={() => ht('end')} maxLength={5} />
-          <button className="clock-picker-btn" onClick={() => { ht('end'); setCpField('end'); }}>🕐</button>
+          <button className="clock-picker-btn md-ripple" onClick={() => { ht('end'); setCpField('end'); }}>🕐</button>
         </div>
       </div>
 
@@ -180,8 +180,8 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
       </div>
 
       <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-        <button className="btn-cancel" onClick={onCancel} style={{ flex: 1 }}>İptal</button>
-        <button className="btn-save" onClick={handleSave} disabled={saving || !startTime || !endTime} style={{ flex: 1 }}>
+        <button className="btn-cancel md-ripple" onClick={onCancel} style={{ flex: 1 }}>İptal</button>
+        <button className="btn-save md-ripple" onClick={handleSave} disabled={saving || !startTime || !endTime} style={{ flex: 1 }}>
           {saving ? '...' : 'Kaydet'}
         </button>
       </div>
@@ -252,22 +252,22 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         }
         return (
           <div key={entry.id} style={{
-            border: '1px solid #E5E7EB', borderRadius: 10, padding: 14, marginBottom: 10,
+            border: '1px solid var(--md-outline-variant)', borderRadius: 12, padding: 14, marginBottom: 10,
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           }}>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 600 }}>
+              <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--md-on-surface)' }}>
                 {t.start} → {t.end} {t.isNextDay && <span className="next-day-badge">+1 gün</span>}
               </div>
-              <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>
+              <div style={{ fontSize: 12, color: 'var(--md-on-surface-variant)', marginTop: 2 }}>
                 Mola: {entry.break_minutes} dk · Toplam: {formatMinutes(entry.total_minutes)}
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 6 }}>
-              <button onClick={() => setEditingId(entry.id)}
-                style={{ background: '#F3F4F6', border: 'none', borderRadius: 6, padding: '6px 10px', cursor: 'pointer' }}>✏️</button>
-              <button onClick={() => handleDelete(entry.id)}
-                style={{ background: '#FEE2E2', border: 'none', borderRadius: 6, padding: '6px 10px', cursor: 'pointer' }}>🗑️</button>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={() => setEditingId(entry.id)} className="md-ripple"
+                style={{ background: 'var(--md-surface-container-high)', border: 'none', borderRadius: 8, padding: '10px 12px', cursor: 'pointer', minWidth: 48, minHeight: 48 }}>✏️</button>
+              <button onClick={() => handleDelete(entry.id)} className="md-ripple"
+                style={{ background: 'var(--md-error-container)', border: 'none', borderRadius: 8, padding: '10px 12px', cursor: 'pointer', minWidth: 48, minHeight: 48 }}>🗑️</button>
             </div>
           </div>
         );
@@ -277,14 +277,14 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
 
       {!addingNew && (
-        <button onClick={() => setAddingNew(true)} className="add-entry-btn">
+        <button onClick={() => setAddingNew(true)} className="add-entry-btn md-ripple">
           <span style={{ fontSize: 22, marginRight: 8, fontWeight: 300 }}>+</span>
           {entries.length === 0 ? 'Çalışma Ekle' : 'Yeni Kayıt Ekle'}
         </button>
       )}
 
       <div className="card-actions" style={{ marginTop: 16 }}>
-        <button className="btn-cancel" onClick={onClose}>Kapat</button>
+        <button className="btn-cancel md-ripple" onClick={onClose}>Kapat</button>
       </div>
     </div>
   );

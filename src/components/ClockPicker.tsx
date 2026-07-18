@@ -235,14 +235,14 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
           <div className="circular-clock__left">
             <div className="circular-clock__time-digits">
               <button
-                className={`circular-clock__time-digit${mode === 'hour' ? ' active' : ''}`}
+                className={`circular-clock__time-digit md-ripple${mode === 'hour' ? ' active' : ''}`}
                 onClick={() => setMode('hour')}
               >
                 {hh}
               </button>
               <span className="circular-clock__time-colon">:</span>
               <button
-                className={`circular-clock__time-digit${mode === 'minute' ? ' active' : ''}`}
+                className={`circular-clock__time-digit md-ripple${mode === 'minute' ? ' active' : ''}`}
                 onClick={() => setMode('minute')}
               >
                 {mm}
@@ -250,11 +250,11 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
             </div>
             <div className="circular-clock__ampm">
               <button
-                className={`circular-clock__ampm-btn${!isPM ? ' active' : ''}`}
+                className={`circular-clock__ampm-btn md-ripple${!isPM ? ' active' : ''}`}
                 onClick={() => setSelectedHour24(to24h(selectedHour12, false))}
               >AM</button>
               <button
-                className={`circular-clock__ampm-btn${isPM ? ' active' : ''}`}
+                className={`circular-clock__ampm-btn md-ripple${isPM ? ' active' : ''}`}
                 onClick={() => setSelectedHour24(to24h(selectedHour12, true))}
               >PM</button>
             </div>
@@ -341,8 +341,8 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
 
         {/* --- Alt: İptal / Onayla --- */}
         <div className="circular-clock__footer">
-          <button className="circular-clock__cancel" onClick={onClose}>İptal</button>
-          <button className="circular-clock__confirm" onClick={confirm}>Onayla</button>
+          <button className="circular-clock__cancel md-ripple" onClick={onClose}>İptal</button>
+          <button className="circular-clock__confirm md-ripple" onClick={confirm}>Onayla</button>
         </div>
       </div>
     </div>

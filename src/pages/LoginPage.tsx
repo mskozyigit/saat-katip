@@ -14,7 +14,7 @@ export default function LoginPage() {
       <p>Çalışma saatlerinizi kolayca takip edin</p>
 
       <button
-        className="google-signin-btn"
+        className="google-signin-btn md-ripple"
         onClick={login}
         disabled={loading}
       >
