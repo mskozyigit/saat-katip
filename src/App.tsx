@@ -44,7 +44,7 @@ export default function App() {
 
   return (
     <IonApp>
-      <IonReactRouter>
+      <IonReactRouter basename="/saat-katip">
         <IonRouterOutlet>
           {session ? (
             <>
