@@ -11,7 +11,8 @@
     "lint": "eslint src/",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:chromium": "playwright test --project=\"Desktop Chrome\""
+    "test:android": "playwright test --project=android-chrome",
+    "test:desktop": "playwright test --project=desktop-chrome"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",

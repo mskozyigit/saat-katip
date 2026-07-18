@@ -18,7 +18,7 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'Android Chrome',
+      name: 'android-chrome',
       use: {
         ...devices['Pixel 7'],
         browserName: 'chromium',
@@ -27,7 +27,7 @@ export default defineConfig({
       },
     },
     {
-      name: 'Desktop Chrome',
+      name: 'desktop-chrome',
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 800 },
