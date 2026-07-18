@@ -227,7 +227,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
   const { generateSuggestions } = usePrediction();
   const [suggestions, setSuggestions] = useState<DailySuggestions | null>(null);
   // Kayıt yoksa form otomatik açık gelsin
-  const [addingNew, setAddingNew] = useState(entries.length === 0);
+  const [addingNew, setAddingNew] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -307,7 +307,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
       })}
 
       {addingNew && <EntryForm key="new-form" date={date} entry={null} suggestions={suggestions}
-        onSave={handleSave} onCancel={() => { setAddingNew(false); if (entries.length === 0) onClose(); }} saving={saving} />}
+        onSave={handleSave} onCancel={() => onClose()} saving={saving} />}
 
       {!addingNew && (
         <div className="card-actions" style={{ marginTop: 16 }}>
