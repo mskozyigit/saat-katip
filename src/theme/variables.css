@@ -235,6 +235,14 @@ ion-modal ion-toolbar {
   --min-height: 56px;
 }
 
+ion-modal ion-header {
+  background: var(--md-surface-container-lowest);
+}
+
+ion-modal .ion-page {
+  background: var(--md-surface-container-lowest);
+}
+
 ion-title {
   font-size: var(--md-typescale-title-large);
   font-weight: 500;
@@ -619,13 +627,13 @@ ion-fab-button {
 }
 
 .btn-cancel {
-  background: transparent;
-  color: var(--md-primary);
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface);
   min-height: var(--md-touch-min);
 }
 
 .btn-cancel:active {
-  background: var(--md-primary-container);
+  background: var(--md-surface-container-highest);
 }
 
 /* Çalışma Ekle butonu (Material 3) */
