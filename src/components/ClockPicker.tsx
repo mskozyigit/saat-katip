@@ -119,6 +119,7 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
 
     const handlePointer = (e: MouseEvent | TouchEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       const { x, y } = getPos(e);
       const angle = angleFromCenter(CX, CY, x, y);
       const currentMode = modeRef.current;
@@ -145,6 +146,7 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
 
     const handleDown = (e: MouseEvent | TouchEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       autoSwitchRef.current = false;
       handlePointer(e);
       document.addEventListener('mousemove', handlePointer);

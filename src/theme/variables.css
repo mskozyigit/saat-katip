@@ -220,7 +220,7 @@ ion-toolbar {
   --background: var(--md-surface-container-lowest);
   --color: var(--md-on-surface);
   --border-style: none;
-  --min-height: 56px;
+  --min-height: 48px;
   --padding-top: 0;
   --padding-bottom: 0;
   background: var(--md-surface-container-lowest);
@@ -264,13 +264,13 @@ button {
 
 /* FAB butonu */
 ion-fab-button {
-  --background: var(--md-primary);
-  --color: var(--md-on-primary);
-  --box-shadow: 0 4px 8px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.15);
-  width: 64px;
-  height: 64px;
-  font-size: 32px;
-  border: 1px solid rgba(255,255,255,0.15);
+  --background: var(--md-primary) !important;
+  --color: var(--md-on-primary) !important;
+  --box-shadow: 0 4px 8px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.15) !important;
+  width: 64px !important;
+  height: 64px !important;
+  font-size: 36px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
 }
 
 /* ========================================================================
@@ -757,6 +757,8 @@ ion-fab-button {
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.15s ease;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
 
 @keyframes fadeIn {
