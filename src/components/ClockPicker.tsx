@@ -43,12 +43,6 @@ function angleToMinute(angle: number): number {
   return mins[idx];
 }
 
-/** Dakikaya göre açı */
-function minuteToAngle(minute: number): number {
-  const idx = [0, 15, 30, 45].indexOf(minute);
-  return (idx / 4) * 360;
-}
-
 // ============================================================================
 
 export default function ClockPicker({ value, onChange, onClose }: ClockPickerProps) {
