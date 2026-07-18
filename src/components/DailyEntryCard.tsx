@@ -138,7 +138,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
   return (
     <div style={{ border: '1px solid var(--md-outline-variant)', borderRadius: 12, padding: 16, marginBottom: 12 }}>
       <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: isNew ? 'var(--md-primary)' : 'var(--md-on-surface)' }}>
-        {isNew ? '🆕 Yeni Kayıt' : '✏️ Kaydı Düzenle'}
+        {isNew ? 'Yeni Kayıt' : 'Kaydı Düzenle'}
       </div>
 
       <div style={{ marginBottom: 12 }}>
@@ -182,10 +182,21 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
         Toplam: {formatMinutes(total)}
       </div>
 
-      <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-        <button className="btn-cancel md-ripple" onClick={onCancel} style={{ flex: 1 }}>İptal</button>
-        <button className="btn-save md-ripple" onClick={handleSave} disabled={saving || !startTime || !endTime} style={{ flex: 1.5 }}>
-          {saving ? '...' : 'Kaydet'}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+        <button
+          className="btn-save md-ripple"
+          onClick={handleSave}
+          disabled={saving || !startTime || !endTime}
+          style={{ width: '100%' }}
+        >
+          {saving ? 'Kaydediliyor...' : 'Kaydet'}
+        </button>
+        <button
+          className="btn-cancel md-ripple"
+          onClick={onCancel}
+          style={{ width: '100%' }}
+        >
+          İptal
         </button>
       </div>
 
@@ -287,7 +298,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
           </button>
 
           <div className="card-actions" style={{ marginTop: 16 }}>
-            <button className="btn-cancel md-ripple" onClick={onClose}>İptal</button>
+            <button className="btn-cancel md-ripple" onClick={onClose} style={{ width: '100%' }}>İptal</button>
           </div>
         </>
       )}

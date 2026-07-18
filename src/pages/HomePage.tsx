@@ -127,9 +127,9 @@ export default function HomePage() {
 
       {/* Günlük Kayıt Modalı */}
       <IonModal isOpen={selectedDate !== null} onDidDismiss={handleCloseModal}>
-        <IonHeader>
+        <IonHeader className="ion-no-border">
           <IonToolbar>
-            <IonTitle>
+            <IonTitle className="ion-text-center">
               Günlük Kayıt {dayEntries.length > 0 ? `(${dayEntries.length})` : ''}
             </IonTitle>
           </IonToolbar>

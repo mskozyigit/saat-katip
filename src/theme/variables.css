@@ -515,13 +515,13 @@ ion-fab-button {
 /* Kart aksiyon butonları (Material 3) */
 .card-actions {
   display: flex;
+  flex-direction: column;
   gap: var(--md-spacing-12);
   margin-top: var(--md-spacing-24);
 }
 
 .card-actions button {
-  flex: 1;
-  padding: 0 var(--md-spacing-16);
+  padding: 0 var(--md-spacing-24);
   border: none;
   border-radius: var(--md-radius-full);
   font-size: var(--md-typescale-label-large);
@@ -534,6 +534,9 @@ ion-fab-button {
 .btn-save {
   background: var(--md-primary);
   color: var(--md-on-primary);
+  min-height: 56px;
+  font-size: var(--md-typescale-body-large);
+  font-weight: 500;
 }
 
 .btn-save:disabled {
@@ -544,8 +547,9 @@ ion-fab-button {
 }
 
 .btn-cancel {
-  background: var(--md-surface-container-high);
-  color: var(--md-on-surface-variant);
+  background: transparent;
+  color: var(--md-primary);
+  min-height: var(--md-touch-min);
 }
 
 /* Çalışma Ekle butonu (Material 3) */
