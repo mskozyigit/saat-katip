@@ -58,7 +58,7 @@ const CLR = {
   bg:           '#2D2F33',
   topBg:        '#252729',
   faceBg:       '#2D2F33',
-  ring:         '#3D4045',
+  ring:         '#4A4D52',
   text:         '#E8EAED',
   textDim:      '#9AA0A6',
   accent:       '#8AB4F8',
@@ -98,8 +98,11 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
   const SIZE = 420;
   const CX = SIZE / 2;
   const CY = SIZE / 2;
-  const R = 162;
-  const HAND_R = R - 32;
+  // İki daire: dış (R_OUT) ve iç (R_IN). Rakamlar bu ikisi arasında.
+  const R_OUT = 185;     // dış daire yarıçapı
+  const R_IN = 120;      // iç daire yarıçapı
+  const R_MID = (R_OUT + R_IN) / 2;  // rakamların oturduğu orta çizgi (~152)
+  const HAND_R = R_IN - 12;  // ibre ucu iç dairenin hemen dışında
 
   const confirm = useCallback(() => {
     onChange(`${String(selectedHour24).padStart(2, '0')}:${String(selectedMinute).padStart(2, '0')}`);
@@ -190,8 +193,8 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
     const h12 = i === 0 ? 12 : i;
     const angle = hourToAngle(h12);
     const rad = toRad(angle - 90);
-    const tx = CX + R * Math.cos(rad);
-    const ty = CY + R * Math.sin(rad);
+    const tx = CX + R_MID * Math.cos(rad);
+    const ty = CY + R_MID * Math.sin(rad);
     const isSelected = mode === 'hour' && h12 === selectedHour12;
     return { label: String(h12), tx, ty, isSelected };
   });
@@ -201,13 +204,15 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
     const angle = minuteToAngle(m);
     const rad = toRad(angle - 90);
     const isMajor = m % 5 === 0;
-    const rStart = isMajor ? R - 14 : R - 6;
-    const rEnd = R;
+    // Çizgiler dış daireden içeri doğru
+    const rStart = isMajor ? R_IN + 10 : R_IN + 18;
+    const rEnd = R_OUT;
     const x1 = CX + rStart * Math.cos(rad);
     const y1 = CY + rStart * Math.sin(rad);
     const x2 = CX + rEnd * Math.cos(rad);
     const y2 = CY + rEnd * Math.sin(rad);
-    const lr = R - 24;
+    // Rakamlar halkanın ortasında
+    const lr = R_MID;
     const lx = CX + lr * Math.cos(rad);
     const ly = CY + lr * Math.sin(rad);
     const isSelected = mode === 'minute' && m === selectedMinute;
@@ -263,8 +268,9 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
             height={SIZE}
             style={{ touchAction: 'none', cursor: 'pointer', display: 'block' }}
           >
-            {/* Halka arkaplanı */}
-            <circle cx={CX} cy={CY} r={R} fill="none" stroke={CLR.ring} strokeWidth="28" />
+            {/* İki daire: dış ve iç, rakamlar arada */}
+            <circle cx={CX} cy={CY} r={R_OUT} fill="none" stroke={CLR.ring} strokeWidth="2" />
+            <circle cx={CX} cy={CY} r={R_IN} fill="none" stroke={CLR.ring} strokeWidth="2" />
 
             {mode === 'hour' ? (
               /* ---- SAAT MODU: 12 rakam ---- */
@@ -272,12 +278,12 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
                 {hourMarkers.map(({ label, tx, ty, isSelected }) => (
                   <g key={`h-${label}`}>
                     {isSelected && (
-                      <circle cx={tx} cy={ty} r="20" fill={CLR.accentBg} />
+                      <circle cx={tx} cy={ty} r="28" fill={CLR.accentBg} />
                     )}
                     <text
                       x={tx} y={ty}
                       textAnchor="middle" dominantBaseline="central"
-                      fontSize={18}
+                      fontSize={20}
                       fontWeight={isSelected ? 600 : 400}
                       fill={isSelected ? CLR.accentText : CLR.textDim}
                       style={{ pointerEvents: 'none', userSelect: 'none' }}
@@ -293,12 +299,12 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
                 {minuteMarkers.map(({ m, x1, y1, x2, y2, lx, ly, isMajor, isSelected }) => (
                   <g key={`m-${m}`}>
                     {isSelected && (
-                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r="20" fill={CLR.accentBg} />
+                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r="28" fill={CLR.accentBg} />
                     )}
                     <line
                       x1={x1} y1={y1} x2={x2} y2={y2}
                       stroke={isSelected ? CLR.accentText : isMajor ? CLR.textDim : '#555960'}
-                      strokeWidth={isSelected ? 3 : isMajor ? 2 : 1}
+                      strokeWidth={isSelected ? 4 : isMajor ? 2.5 : 2}
                       strokeLinecap="round"
                       style={{ pointerEvents: 'none' }}
                     />
@@ -306,7 +312,7 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
                       <text
                         x={lx} y={ly}
                         textAnchor="middle" dominantBaseline="central"
-                        fontSize={11} fontWeight={500} fill={CLR.textDim}
+                        fontSize={12} fontWeight={500} fill={CLR.textDim}
                         style={{ pointerEvents: 'none', userSelect: 'none' }}
                       >
                         {String(m).padStart(2, '0')}
@@ -325,7 +331,9 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
               style={{ pointerEvents: 'none' }}
             />
             {/* Merkez nokta */}
-            <circle cx={CX} cy={CY} r="5" fill={CLR.centerDot} style={{ pointerEvents: 'none' }} />
+            <circle cx={CX} cy={CY} r="6" fill={CLR.centerDot} style={{ pointerEvents: 'none' }} />
+            {/* İç daire içi hafif gölge */}
+            <circle cx={CX} cy={CY} r={R_IN} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
           </svg>
         </div>
         </div>
