@@ -1,57 +1,209 @@
 /* ============================================================================
-   Saat Katip — CSS Değişkenleri ve Tema (Android Material)
+   Saat Katip — Material Design 3 (Material You) Tema
+   ============================================================================
+   dp = density-independent pixels. Web'de 1dp ≈ 1px (CSS px zaten yoğunluktan bağımsızdır).
+   Tüm dokunma hedefleri ≥ 48dp, aralıklar ≥ 8dp.
    ============================================================================ */
 
 :root {
-  /* Material Design ana renk paleti */
-  --color-primary: #1976D2;
-  --color-primary-light: #42A5F5;
-  --color-primary-dark: #1565C0;
+  /* === Material 3 Renk Paleti === */
+  --md-primary: #6750A4;
+  --md-on-primary: #FFFFFF;
+  --md-primary-container: #EADDFF;
+  --md-on-primary-container: #21005D;
 
-  /* Öneri (suggestion) stili */
-  --color-suggestion: #1976D2;
-  --color-suggestion-bg: #E3F2FD;
+  --md-secondary: #625B71;
+  --md-on-secondary: #FFFFFF;
+  --md-secondary-container: #E8DEF8;
+  --md-on-secondary-container: #1D192B;
 
-  /* Metin renkleri */
-  --color-text: #212121;
-  --color-text-secondary: #757575;
+  --md-tertiary: #7D5260;
+  --md-on-tertiary: #FFFFFF;
+  --md-tertiary-container: #FFD8E4;
+  --md-on-tertiary-container: #31111D;
 
-  /* Grid / Ajanda renkleri */
-  --color-grid-line: #E0E0E0;
-  --color-grid-hour: #F5F5F5;
-  --color-grid-today: #BBDEFB;
+  --md-error: #B3261E;
+  --md-on-error: #FFFFFF;
+  --md-error-container: #F9DEDC;
+  --md-on-error-container: #410E0B;
 
-  /* Yüzey / Kart renkleri */
-  --color-surface: #FFFFFF;
-  --color-background: #FAFAFA;
+  /* === Material 3 Yüzey Renkleri === */
+  --md-surface: #FEF7FF;
+  --md-on-surface: #1C1B1F;
+  --md-surface-variant: #E7E0EC;
+  --md-on-surface-variant: #49454F;
+  --md-outline: #79747E;
+  --md-outline-variant: #CAC4D0;
 
-  /* İyonik değişkenleri */
-  --ion-color-primary: #1976D2;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --md-surface-container-lowest: #FFFFFF;
+  --md-surface-container-low: #F7F2FA;
+  --md-surface-container: #F3EDF7;
+  --md-surface-container-high: #ECE6F0;
+  --md-surface-container-highest: #E6E0E9;
 
-  /* Material gölgeler (elevation) */
-  --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
-  --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.10);
-  --elevation-4: 0 6px 12px rgba(0,0,0,0.18), 0 4px 8px rgba(0,0,0,0.12);
+  --md-inverse-surface: #313033;
+  --md-inverse-on-surface: #F4EFF4;
 
-  /* Android tipografisi */
+  /* === Geriye dönük uyumluluk değişkenleri === */
+  --color-primary: var(--md-primary);
+  --color-primary-light: #9A82DB;
+  --color-primary-dark: #4F378B;
+  --color-suggestion: var(--md-primary);
+  --color-suggestion-bg: var(--md-primary-container);
+  --color-text: var(--md-on-surface);
+  --color-text-secondary: var(--md-on-surface-variant);
+  --color-grid-line: var(--md-outline-variant);
+  --color-grid-hour: var(--md-surface-container-low);
+  --color-grid-today: var(--md-primary-container);
+  --color-surface: var(--md-surface-container-lowest);
+  --color-background: var(--md-surface);
+
+  /* === İyonik === */
+  --ion-color-primary: var(--md-primary);
+  --ion-color-primary-contrast: var(--md-on-primary);
+  --ion-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* === Material 3 Elevation (gölge token'ları) === */
+  --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --md-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+  --md-elevation-3: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+  --md-elevation-4: 0 2px 3px rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15);
+  --elevation-1: var(--md-elevation-1);
+  --elevation-2: var(--md-elevation-2);
+  --elevation-4: var(--md-elevation-4);
+
+  /* === Material 3 Tipografi (sp ≈ px) === */
+  --md-typescale-display-large: 57px;
+  --md-typescale-display-medium: 45px;
+  --md-typescale-display-small: 36px;
+  --md-typescale-headline-large: 32px;
+  --md-typescale-headline-medium: 28px;
+  --md-typescale-headline-small: 24px;
+  --md-typescale-title-large: 22px;
+  --md-typescale-title-medium: 16px;
+  --md-typescale-title-small: 14px;
+  --md-typescale-body-large: 16px;
+  --md-typescale-body-medium: 14px;
+  --md-typescale-body-small: 12px;
+  --md-typescale-label-large: 14px;
+  --md-typescale-label-medium: 12px;
+  --md-typescale-label-small: 11px;
+
+  /* === Material 3 Aralık Sistemi (dp) === */
+  --md-spacing-4: 4px;
+  --md-spacing-8: 8px;
+  --md-spacing-12: 12px;
+  --md-spacing-16: 16px;
+  --md-spacing-24: 24px;
+  --md-spacing-32: 32px;
+
+  /* === Material 3 Köşe Yuvarlaklığı === */
+  --md-radius-xs: 4px;
+  --md-radius-sm: 8px;
+  --md-radius-md: 12px;
+  --md-radius-lg: 16px;
+  --md-radius-xl: 28px;
+  --md-radius-full: 9999px;
+
+  /* === Dokunma Hedefleri (dp) === */
+  --md-touch-min: 48px;
+  --md-touch-comfortable: 56px;
+
+  /* Temel tipografi */
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: var(--md-typescale-body-medium);
+  line-height: 1.5;
 }
+
+/* ========================================================================
+   Genel ripple efekti (Material dalga yayılması)
+   ======================================================================== */
+@keyframes md-ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+.md-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, currentColor 10%, transparent 10%);
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.md-ripple:active::after {
+  opacity: 0.12;
+  transform: scale(0);
+  transition: 0s;
+}
+
+/* ========================================================================
+   Temel eleman stilleri
+   ======================================================================== */
 
 /* Genel sayfa arkaplanı */
 ion-content {
-  --background: var(--color-background);
+  --background: var(--md-surface);
 }
 
+/* Toolbar — 56dp yükseklik */
 ion-toolbar {
-  --background: var(--color-primary);
-  --color: #ffffff;
+  --background: var(--md-surface);
+  --color: var(--md-on-surface);
   --border-style: none;
-  box-shadow: var(--elevation-2);
+  --min-height: 56px;
+  --padding-top: 0;
+  --padding-bottom: 0;
 }
+
+ion-header {
+  box-shadow: none;
+}
+
+ion-header ion-toolbar:first-child {
+  --background: var(--md-surface);
+}
+
+/* Modal içindeki header */
+ion-modal ion-toolbar {
+  --background: var(--md-surface-container-lowest);
+  --color: var(--md-on-surface);
+  --min-height: 56px;
+}
+
+ion-title {
+  font-size: var(--md-typescale-title-large);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--md-on-surface);
+}
+
+/* Buton temel stili */
+button {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* FAB butonu */
+ion-fab-button {
+  --background: var(--md-primary-container);
+  --color: var(--md-on-primary-container);
+  --box-shadow: var(--md-elevation-3);
+  width: 56px;
+  height: 56px;
+}
+
+/* ========================================================================
+   Ajanda Grid Stilleri (Material 3)
+   ======================================================================== */
 
 /* --------------------------------------------------------------------------
    Ajanda Grid Stilleri (Material)
@@ -69,9 +221,10 @@ ion-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-grid-line);
+  padding: var(--md-spacing-8) var(--md-spacing-16);
+  background: var(--md-surface-container-lowest);
+  border-bottom: 1px solid var(--md-outline-variant);
+  min-height: 56px;
 }
 
 .calendar-header__nav {
@@ -81,37 +234,37 @@ ion-toolbar {
 }
 
 .calendar-header__date {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text);
+  font-size: var(--md-typescale-title-medium);
+  font-weight: 500;
+  color: var(--md-on-surface);
 }
 
 .calendar-view-toggle {
   display: flex;
-  background: var(--color-grid-hour);
-  border-radius: 8px;
+  background: var(--md-surface-container-high);
+  border-radius: var(--md-radius-full);
   overflow: hidden;
-  box-shadow: var(--elevation-1);
 }
 
 .calendar-view-toggle button {
-  padding: 8px 16px;
+  padding: 8px var(--md-spacing-16);
   border: none;
   background: transparent;
-  font-size: 13px;
+  font-size: var(--md-typescale-label-large);
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: var(--md-on-surface-variant);
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Roboto', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+  min-height: 40px;
+  min-width: 64px;
+  border-radius: var(--md-radius-full);
 }
 
 .calendar-view-toggle button.active {
-  background: var(--color-primary);
-  color: #ffffff;
-  box-shadow: var(--elevation-1);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  font-weight: 600;
 }
 
 /* Saat ekseni grid gövdesi */
@@ -150,14 +303,14 @@ ion-toolbar {
 .day-column {
   flex: 1;
   position: relative;
-  border-right: 1px solid var(--color-grid-line);
-  min-width: 80px;
+  border-right: 1px solid var(--md-outline-variant);
+  min-width: 56px;
   cursor: pointer;
-  transition: background-color 0.1s ease;
+  transition: background-color 0.15s ease;
 }
 
 .day-column:hover {
-  background-color: var(--color-grid-hour);
+  background-color: var(--md-surface-container-low);
 }
 
 /* 🆕 Hover durumunda + işareti göster */
@@ -176,93 +329,93 @@ ion-toolbar {
 }
 
 .day-column.today {
-  background-color: var(--color-grid-today);
+  background-color: var(--md-primary-container);
 }
 
 /* Gün başlığı (tarih + gün adı) */
 .day-column__header {
   text-align: center;
-  padding: 8px 4px;
-  font-size: 12px;
-  color: var(--color-text-secondary);
-  border-bottom: 1px solid var(--color-grid-line);
+  padding: var(--md-spacing-8) var(--md-spacing-4);
+  font-size: var(--md-typescale-label-medium);
+  color: var(--md-on-surface-variant);
+  border-bottom: 1px solid var(--md-outline-variant);
   position: sticky;
   top: 0;
-  background: white;
+  background: var(--md-surface-container-lowest);
   z-index: 1;
 }
 
 .day-column.today .day-column__header {
-  color: var(--color-primary);
+  color: var(--md-on-primary-container);
   font-weight: 600;
 }
 
 /* Saat çizgileri — SADECE GÖRSEL REFERANS, TIKLANAMAZ */
 .day-column__hour-line {
   height: 60px;
-  border-bottom: 1px solid var(--color-grid-line);
-  pointer-events: none; /* 🔴 Tıklanabilir olmaması için KRİTİK */
+  border-bottom: 1px solid var(--md-outline-variant);
+  pointer-events: none;
 }
 
-/* Kayıtlı giriş bloğu (grid üzerinde render edilen kısım) */
+/* Kayıtlı giriş bloğu */
 .entry-block {
   position: absolute;
   left: 4px;
   right: 4px;
-  background: var(--color-primary);
-  opacity: 0.75;
-  border-radius: 4px;
+  background: var(--md-primary);
+  opacity: 0.82;
+  border-radius: var(--md-radius-xs);
   z-index: 2;
-  pointer-events: none; /* Bloğa tıklanmaz, sütuna tıklanır */
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
-   Günlük Kayıt Kartı (Modal) Stilleri
+   Günlük Kayıt Kartı (Modal) Stilleri — Material 3
    -------------------------------------------------------------------------- */
 
 .daily-entry-card {
-  padding: 20px;
+  padding: var(--md-spacing-16);
 }
 
 .daily-entry-card h3 {
-  margin: 0 0 20px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text);
+  margin: 0 0 var(--md-spacing-16) 0;
+  font-size: var(--md-typescale-headline-small);
+  font-weight: 500;
+  color: var(--md-on-surface);
 }
 
 /* Alan etiketi */
 .field-label {
-  font-size: 13px;
+  font-size: var(--md-typescale-label-large);
   font-weight: 500;
-  color: var(--color-text-secondary);
-  margin-bottom: 6px;
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--md-spacing-8);
 }
 
 /* Zaman giriş alanı */
 .time-input-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--md-spacing-8);
 }
 
 .time-input {
   flex: 1;
-  padding: 12px 14px;
-  border: 1px solid var(--color-grid-line);
-  border-radius: 8px;
-  font-size: 18px;
+  padding: 14px var(--md-spacing-16);
+  border: 1px solid var(--md-outline);
+  border-radius: var(--md-radius-sm);
+  font-size: var(--md-typescale-body-large);
   font-family: 'Roboto', monospace;
-  letter-spacing: 1px;
   transition: border-color 0.2s ease;
-  background: var(--color-surface);
+  background: var(--md-surface-container-lowest);
+  min-height: var(--md-touch-comfortable);
 }
 
 .time-input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: var(--md-primary);
   border-width: 2px;
-  padding: 11px 13px;
+  padding: 13px 15px;
 }
 
 /* 🟦 Öneri durumu (suggestion) stili */
@@ -279,19 +432,18 @@ ion-toolbar {
   margin-left: 4px;
 }
 
-/* Saat seçici ikon butonu */
+/* Saat seçici ikon butonu — min 48dp */
 .clock-picker-btn {
-  width: 44px;
-  height: 44px;
+  width: var(--md-touch-min);
+  height: var(--md-touch-min);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-grid-hour);
+  background: var(--md-surface-container-high);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--md-radius-sm);
   cursor: pointer;
-  font-size: 22px;
-  /* Mobil dokunma hedefi: minimum 44x44px */
+  font-size: 24px;
 }
 
 /* Mola buton grubu */
@@ -304,25 +456,25 @@ ion-toolbar {
 .break-btn {
   flex: 1;
   min-width: 60px;
-  padding: 12px 8px;
-  border: 1px solid var(--color-grid-line);
-  border-radius: 8px;
-  background: var(--color-surface);
-  font-size: 14px;
+  padding: 12px var(--md-spacing-8);
+  border: 1px solid var(--md-outline);
+  border-radius: var(--md-radius-sm);
+  background: var(--md-surface-container-lowest);
+  font-size: var(--md-typescale-label-large);
   font-weight: 500;
-  color: var(--color-text);
+  color: var(--md-on-surface);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
-  min-height: 44px;
+  min-height: var(--md-touch-min);
   font-family: 'Roboto', sans-serif;
 }
 
 .break-btn.selected {
-  background: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
-  box-shadow: var(--elevation-1);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-color: var(--md-primary);
+  font-weight: 600;
 }
 
 /* 🟦 Mola öneri durumu */
@@ -357,66 +509,61 @@ ion-toolbar {
   margin-left: 8px;
 }
 
-/* Kart aksiyon butonları (Material) */
+/* Kart aksiyon butonları (Material 3) */
 .card-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: var(--md-spacing-12);
+  margin-top: var(--md-spacing-24);
 }
 
 .card-actions button {
   flex: 1;
-  padding: 14px;
+  padding: 0 var(--md-spacing-16);
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: var(--md-radius-full);
+  font-size: var(--md-typescale-label-large);
   font-weight: 500;
   cursor: pointer;
-  min-height: 48px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  min-height: var(--md-touch-min);
   font-family: 'Roboto', sans-serif;
 }
 
 .btn-save {
-  background: var(--color-primary);
-  color: white;
-  box-shadow: var(--elevation-1);
+  background: var(--md-primary);
+  color: var(--md-on-primary);
 }
 
 .btn-cancel {
-  background: var(--color-grid-hour);
-  color: var(--color-text);
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface-variant);
 }
 
-/* Çalışma Ekle butonu (Material) */
+/* Çalışma Ekle butonu (Material 3) */
 .add-entry-btn {
   width: 100%;
-  padding: 16px 14px;
-  border: 2px dashed #BDBDBD;
-  border-radius: 12px;
+  padding: var(--md-spacing-16) var(--md-spacing-16);
+  border: 1px dashed var(--md-outline);
+  border-radius: var(--md-radius-md);
   background: transparent;
-  font-size: 15px;
+  font-size: var(--md-typescale-label-large);
   font-weight: 500;
-  color: var(--color-primary);
+  color: var(--md-primary);
   cursor: pointer;
-  margin-top: 12px;
+  margin-top: var(--md-spacing-12);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
-  min-height: 52px;
+  min-height: var(--md-touch-comfortable);
   font-family: 'Roboto', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .add-entry-btn:hover {
-  background: var(--color-suggestion-bg);
+  background: var(--md-primary-container);
 }
 
 /* --------------------------------------------------------------------------
-   Giriş sayfası
+   Giriş sayfası (Material 3)
    -------------------------------------------------------------------------- */
 
 .login-page {
@@ -425,41 +572,49 @@ ion-toolbar {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 24px;
+  padding: var(--md-spacing-24);
   text-align: center;
+  background: var(--md-surface);
 }
 
 .login-page h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: 8px;
+  font-size: var(--md-typescale-headline-large);
+  font-weight: 400;
+  color: var(--md-on-surface);
+  margin-bottom: var(--md-spacing-8);
 }
 
 .login-page p {
-  font-size: 15px;
-  color: var(--color-text-secondary);
-  margin-bottom: 32px;
+  font-size: var(--md-typescale-body-large);
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--md-spacing-32);
 }
 
 .google-signin-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
-  background: white;
-  border: 1px solid var(--color-grid-line);
-  border-radius: 12px;
-  font-size: 16px;
+  gap: 12px;
+  padding: 0 var(--md-spacing-24);
+  background: var(--md-surface-container-lowest);
+  border: 1px solid var(--md-outline);
+  border-radius: var(--md-radius-full);
+  font-size: var(--md-typescale-label-large);
   font-weight: 500;
-  color: var(--color-text);
+  color: var(--md-on-surface);
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.15s ease;
+  box-shadow: var(--md-elevation-1);
+  transition: box-shadow 0.2s ease;
+  min-height: var(--md-touch-min);
+  font-family: 'Roboto', sans-serif;
 }
 
 .google-signin-btn:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--md-elevation-2);
+}
+
+.google-signin-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 /* --------------------------------------------------------------------------

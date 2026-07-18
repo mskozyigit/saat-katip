@@ -100,9 +100,10 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
   const CY = SIZE / 2;
   // İki daire: dış (R_OUT) ve iç (R_IN). Rakamlar bu ikisi arasında.
   const R_OUT = 185;     // dış daire yarıçapı
-  const R_IN = 120;      // iç daire yarıçapı
-  const R_MID = (R_OUT + R_IN) / 2;  // rakamların oturduğu orta çizgi (~152)
+  const R_IN = 115;      // iç daire yarıçapı (küçültüldü → halka genişledi)
+  const R_MID = (R_OUT + R_IN) / 2;  // rakamların oturduğu orta çizgi (~150)
   const HAND_R = R_IN - 12;  // ibre ucu iç dairenin hemen dışında
+  const TOUCH_R = 30;    // seçim dairesi yarıçapı (60dp — comfortable touch)
 
   const confirm = useCallback(() => {
     onChange(`${String(selectedHour24).padStart(2, '0')}:${String(selectedMinute).padStart(2, '0')}`);
@@ -278,12 +279,12 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
                 {hourMarkers.map(({ label, tx, ty, isSelected }) => (
                   <g key={`h-${label}`}>
                     {isSelected && (
-                      <circle cx={tx} cy={ty} r="28" fill={CLR.accentBg} />
+                      <circle cx={tx} cy={ty} r={TOUCH_R} fill={CLR.accentBg} />
                     )}
                     <text
                       x={tx} y={ty}
                       textAnchor="middle" dominantBaseline="central"
-                      fontSize={20}
+                      fontSize={22}
                       fontWeight={isSelected ? 600 : 400}
                       fill={isSelected ? CLR.accentText : CLR.textDim}
                       style={{ pointerEvents: 'none', userSelect: 'none' }}
@@ -299,7 +300,7 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
                 {minuteMarkers.map(({ m, x1, y1, x2, y2, lx, ly, isMajor, isSelected }) => (
                   <g key={`m-${m}`}>
                     {isSelected && (
-                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r="28" fill={CLR.accentBg} />
+                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r={TOUCH_R} fill={CLR.accentBg} />
                     )}
                     <line
                       x1={x1} y1={y1} x2={x2} y2={y2}

@@ -1,5 +1,5 @@
 // ============================================================================
-// LoginPage — Google OAuth Giriş Sayfası
+// LoginPage — Google OAuth Giriş Sayfası (Material 3)
 // ============================================================================
 
 import { useAuth } from '../hooks/useAuth';
@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      <div style={{ fontSize: 48, marginBottom: 16 }}>⏱️</div>
+      <div style={{ fontSize: 56, marginBottom: 24 }}>⏱️</div>
       <h1>Saat Katip</h1>
       <p>Çalışma saatlerinizi kolayca takip edin</p>
 
@@ -18,7 +18,7 @@ export default function LoginPage() {
         onClick={login}
         disabled={loading}
       >
-        <svg width="20" height="20" viewBox="0 0 24 24">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
           <path
             fill="#4285F4"
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
@@ -39,7 +39,7 @@ export default function LoginPage() {
         {loading ? 'Giriş yapılıyor...' : 'Google ile Giriş Yap'}
       </button>
 
-      <p style={{ marginTop: 24, fontSize: 12, color: 'var(--color-text-secondary)' }}>
+      <p style={{ marginTop: 24, fontSize: 12, color: 'var(--md-on-surface-variant)' }}>
         Sadece Google hesabınızla giriş yapabilirsiniz
       </p>
     </div>
