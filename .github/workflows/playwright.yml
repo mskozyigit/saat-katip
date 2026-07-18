@@ -9,7 +9,10 @@ on:
     - cron: '0 8 * * 1,4' # Pazartesi ve Perşembe 08:00 UTC
 
 jobs:
-  test:
+  # ---------------------------------------------------------------------------
+  # Chromium — Android (Pixel 7) + Desktop Chrome
+  # ---------------------------------------------------------------------------
+  test-chromium:
     name: 'Playwright — ${{ matrix.project }}'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -43,6 +46,43 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.project }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # WebKit — iOS Safari (iPhone 14)
+  # ---------------------------------------------------------------------------
+  test-webkit:
+    name: 'Playwright — ios-safari'
+    runs-on: macos-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps webkit
+
+      - name: Run tests
+        run: npx playwright test --project=ios-safari
+        env:
+          CI: true
+
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-ios-safari
           path: |
             playwright-report/
             test-results/

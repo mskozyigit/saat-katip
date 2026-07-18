@@ -12,7 +12,8 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:android": "playwright test --project=android-chrome",
-    "test:desktop": "playwright test --project=desktop-chrome"
+    "test:desktop": "playwright test --project=desktop-chrome",
+    "test:ios": "playwright test --project=ios-safari"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",

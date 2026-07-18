@@ -325,3 +325,79 @@ test.describe('Responsive Mobil', () => {
     await expect(nav).not.toBeVisible();
   });
 });
+
+// ---------------------------------------------------------------------------
+// 8. iOS Safari Spesifik
+// ---------------------------------------------------------------------------
+test.describe('iOS Safari Spesifik', () => {
+  test('viewport-fit=cover meta etiketi olmalı', async ({ page }) => {
+    await page.goto(APP_URL);
+    const viewport = await page
+      .locator('meta[name="viewport"]')
+      .getAttribute('content')
+      .catch(() => '');
+    expect(viewport).toContain('viewport-fit=cover');
+  });
+
+  test('standalone display-mode API mevcut olmalı', async ({ page, browserName }) => {
+    // navigator.standalone sadece iOS Safari'de mevcuttur
+    test.skip(browserName !== 'webkit', 'Bu test sadece iOS Safari (WebKit) içindir');
+
+    await page.goto(APP_URL);
+    const hasStandalone = await page.evaluate(() => {
+      const hasAPI = 'standalone' in window.navigator;
+      return hasAPI;
+    });
+    expect(hasStandalone).toBe(true);
+  });
+
+  test('overlay backdrop overscroll-behavior: contain olmalı', async ({ page }) => {
+    await page.goto(APP_URL);
+    const hasOverscroll = await page.evaluate(() => {
+      // CSS'te tanımlı olan overscroll-behavior'ı kontrol et
+      const sheets = Array.from(document.styleSheets);
+      for (const sheet of sheets) {
+        try {
+          const rules = Array.from(sheet.cssRules || []);
+          for (const rule of rules) {
+            if (rule instanceof CSSStyleRule &&
+                rule.style.overscrollBehavior === 'contain') {
+              return true;
+            }
+          }
+        } catch { /* cross-origin stylesheet, skip */ }
+      }
+      return false;
+    });
+    expect(hasOverscroll).toBe(true);
+  });
+
+  test('theme-color meta etiketi olmalı', async ({ page }) => {
+    await page.goto(APP_URL);
+    const themeColor = await page
+      .locator('meta[name="theme-color"]')
+      .getAttribute('content')
+      .catch(() => null);
+    expect(themeColor).toBeTruthy();
+  });
+
+  test('touch-action: none overlay için tanımlı olmalı', async ({ page }) => {
+    await page.goto(APP_URL);
+    const hasTouchAction = await page.evaluate(() => {
+      const sheets = Array.from(document.styleSheets);
+      for (const sheet of sheets) {
+        try {
+          const rules = Array.from(sheet.cssRules || []);
+          for (const rule of rules) {
+            if (rule instanceof CSSStyleRule &&
+                rule.style.touchAction === 'none') {
+              return true;
+            }
+          }
+        } catch { /* skip */ }
+      }
+      return false;
+    });
+    expect(hasTouchAction).toBe(true);
+  });
+});

@@ -33,6 +33,15 @@ export default defineConfig({
         viewport: { width: 1280, height: 800 },
       },
     },
+    {
+      name: 'ios-safari',
+      use: {
+        ...devices['iPhone 14'],
+        browserName: 'webkit',
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
   ],
 
   // Lokal geli┼čtirme i├ğin dev server (CI'da kullan─▒lmaz)
