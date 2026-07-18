@@ -187,10 +187,15 @@
    Günlük Kayıt Kartı (Modal) Stilleri
    -------------------------------------------------------------------------- */
 
-/* Modal içerik gövdesi (IonContent yerine düz div) */
-.modal-content-body {
+/* 
+ * IonContent modal içinde düzgün render olmadığı için,
+ * düz bir div ile scroll alanı sağlıyoruz.
+ * IonModal'ın iç yapısı position:absolute kullandığından
+ * biz de absolute positioning ile header altını dolduruyoruz.
+ */
+.modal-scroll-content {
   position: absolute;
-  top: 56px; /* IonHeader yüksekliği kadar */
+  top: 56px;   /* ion-header tahmini yükseklik */
   left: 0;
   right: 0;
   bottom: 0;
