@@ -2,7 +2,7 @@
 // HomePage — Ana Sayfa (Ajanda + Günlük Kayıt Kartı)
 // ============================================================================
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   IonPage,
   IonHeader,
@@ -93,6 +93,38 @@ export default function HomePage() {
     setSelectedDate(null);
     setDayEntries([]);
   }, []);
+
+  // Android geri tuşu: overlay açıkken kapat, ana ekranda çift basınca çık
+  const backPressRef = useRef(0);
+  const selectedDateRef = useRef(selectedDate);
+  selectedDateRef.current = selectedDate;
+
+  useEffect(() => {
+    // Overlay açılınca history'e state ekle
+    if (selectedDate !== null) {
+      window.history.pushState({ overlay: selectedDate }, '');
+    }
+
+    const handlePopState = () => {
+      if (selectedDateRef.current !== null) {
+        // Overlay açık → kapat
+        setSelectedDate(null);
+        setDayEntries([]);
+      } else {
+        // Ana ekran → çift basınca çık
+        const now = Date.now();
+        if (now - backPressRef.current < 800) {
+          window.history.back(); // uygulamadan çık
+        } else {
+          backPressRef.current = now;
+          window.history.pushState({ main: true }, '');
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [selectedDate]);
 
   return (
     <IonPage>
