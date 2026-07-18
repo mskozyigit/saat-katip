@@ -35,7 +35,7 @@
   --md-outline: #79747E;
   --md-outline-variant: #CAC4D0;
 
-  --md-surface-container-lowest: #FFFFFF;
+  --md-surface-container-lowest: #FEF7FF;
   --md-surface-container-low: #F7F2FA;
   --md-surface-container: #F3EDF7;
   --md-surface-container-high: #ECE6F0;
@@ -109,6 +109,18 @@
   --md-touch-min: 48px;
   --md-touch-comfortable: 56px;
 
+  /* === ClockPicker Koyu Tema Renkleri (CSS değişkenleri) === */
+  --cp-bg: #2D2F33;
+  --cp-top-bg: #252729;
+  --cp-ring: #4A4D52;
+  --cp-text: #E8EAED;
+  --cp-text-dim: #9AA0A6;
+  --cp-accent: #8AB4F8;
+  --cp-accent-text: #1A1A1D;
+  --cp-hand: #8AB4F8;
+  --cp-btn-ok-bg: #8AB4F8;
+  --cp-btn-ok-text: #1A1A1D;
+
   /* Temel tipografi */
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -144,6 +156,49 @@
   opacity: 0.12;
   transform: scale(0);
   transition: 0s;
+}
+
+/* ========================================================================
+   Tema Sistemi — data-theme attribute ile tema değiştirme
+   ========================================================================
+   Kullanım: <html data-theme="light"> veya <html data-theme="dark">
+   ======================================================================== */
+
+/* Varsayılan tema (light) — :root'ta tanımlandı */
+
+/* Koyu tema override'ları */
+[data-theme="dark"] {
+  --md-primary: #D0BCFF;
+  --md-on-primary: #381E72;
+  --md-primary-container: #4F378B;
+  --md-on-primary-container: #EADDFF;
+
+  --md-surface: #1C1B1F;
+  --md-on-surface: #E6E1E5;
+  --md-surface-variant: #49454F;
+  --md-on-surface-variant: #CAC4D0;
+  --md-outline: #938F99;
+  --md-outline-variant: #49454F;
+
+  --md-surface-container-lowest: #0F0D13;
+  --md-surface-container-low: #1D1B20;
+  --md-surface-container: #211F26;
+  --md-surface-container-high: #2B2930;
+  --md-surface-container-highest: #36343B;
+
+  --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --md-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+
+  --cp-bg: #1C1B1F;
+  --cp-top-bg: #131216;
+  --cp-ring: #49454F;
+  --cp-text: #E6E1E5;
+  --cp-text-dim: #938F99;
+  --cp-accent: #D0BCFF;
+  --cp-accent-text: #381E72;
+  --cp-hand: #D0BCFF;
+  --cp-btn-ok-bg: #D0BCFF;
+  --cp-btn-ok-text: #381E72;
 }
 
 /* ========================================================================
@@ -313,7 +368,16 @@ ion-fab-button {
   background-color: var(--md-surface-container-low);
 }
 
-/* 🆕 Hover durumunda + işareti göster */
+.day-column:active {
+  background-color: var(--md-surface-container-high);
+}
+
+.day-column.today:active {
+  background-color: var(--md-primary);
+  opacity: 0.3;
+}
+
+/* Hover durumunda + işareti göster */
 .day-column:hover::after {
   content: '+';
   position: absolute;
@@ -480,6 +544,10 @@ ion-fab-button {
   font-weight: 600;
 }
 
+.break-btn:active {
+  background: var(--md-surface-container-high);
+}
+
 /* 🟦 Mola öneri durumu */
 .break-btn.suggestion-selected {
   background: var(--color-suggestion-bg);
@@ -539,6 +607,10 @@ ion-fab-button {
   font-weight: 500;
 }
 
+.btn-save:active {
+  background: var(--md-primary-dark);
+}
+
 .btn-save:disabled {
   background: var(--md-on-surface);
   opacity: 0.12;
@@ -550,6 +622,10 @@ ion-fab-button {
   background: transparent;
   color: var(--md-primary);
   min-height: var(--md-touch-min);
+}
+
+.btn-cancel:active {
+  background: var(--md-primary-container);
 }
 
 /* Çalışma Ekle butonu (Material 3) */
@@ -652,14 +728,14 @@ ion-fab-button {
 }
 
 .circular-clock {
-  background: #2D2F33;
+  background: var(--cp-bg);
   border-radius: var(--md-radius-lg);
   width: 540px;
   max-width: 96vw;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
   animation: slideUp 0.2s ease;
   overflow: hidden;
-  color: #E8EAED;
+  color: var(--cp-text);
 }
 
 @keyframes slideUp {
@@ -672,7 +748,7 @@ ion-fab-button {
   display: flex;
   align-items: center;
   padding: var(--md-spacing-16);
-  background: #252729;
+  background: var(--cp-top-bg);
   gap: var(--md-spacing-16);
 }
 
@@ -696,8 +772,8 @@ ion-fab-button {
   border: none;
   font-size: 52px;
   font-weight: 200;
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #5F6368;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--cp-text-dim);
   cursor: pointer;
   padding: 0 2px;
   border-radius: 4px;
@@ -707,14 +783,18 @@ ion-fab-button {
 }
 
 .circular-clock__time-digit.active {
-  color: #E8EAED;
+  color: var(--cp-text);
   font-weight: 300;
+}
+
+.circular-clock__time-digit:active {
+  opacity: 0.7;
 }
 
 .circular-clock__time-colon {
   font-size: 52px;
   font-weight: 200;
-  color: #5F6368;
+  color: var(--cp-text-dim);
   padding: 0 1px;
   line-height: 1;
 }
@@ -728,12 +808,12 @@ ion-fab-button {
 
 .circular-clock__ampm-btn {
   padding: 6px 12px;
-  border: 1px solid #5F6368;
+  border: 1px solid var(--cp-text-dim);
   border-radius: 6px;
   background: transparent;
   font-size: 15px;
   font-weight: 600;
-  color: #5F6368;
+  color: var(--cp-text-dim);
   cursor: pointer;
   transition: all 0.15s;
   line-height: 1.2;
@@ -743,9 +823,13 @@ ion-fab-button {
 }
 
 .circular-clock__ampm-btn.active {
-  background: #8AB4F8;
-  color: #1A1A1D;
-  border-color: #8AB4F8;
+  background: var(--cp-accent);
+  color: var(--cp-accent-text);
+  border-color: var(--cp-accent);
+}
+
+.circular-clock__ampm-btn:active {
+  opacity: 0.7;
 }
 
 /* --- Saat kadranı --- */
@@ -770,13 +854,13 @@ ion-fab-button {
   justify-content: flex-end;
   gap: var(--md-spacing-8);
   padding: var(--md-spacing-8) var(--md-spacing-16) var(--md-spacing-16);
-  background: #252729;
+  background: var(--cp-top-bg);
 }
 
 .circular-clock__cancel {
   padding: 10px 18px;
   background: transparent;
-  color: #8AB4F8;
+  color: var(--cp-accent);
   border: none;
   border-radius: var(--md-radius-sm);
   font-size: var(--md-typescale-label-large);
@@ -792,8 +876,8 @@ ion-fab-button {
 
 .circular-clock__confirm {
   padding: 10px 24px;
-  background: #8AB4F8;
-  color: #1A1A1D;
+  background: var(--cp-btn-ok-bg);
+  color: var(--cp-btn-ok-text);
   border: none;
   border-radius: var(--md-radius-sm);
   font-size: var(--md-typescale-label-large);
