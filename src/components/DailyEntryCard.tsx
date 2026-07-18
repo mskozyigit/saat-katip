@@ -301,7 +301,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
       })}
 
       {addingNew && <EntryForm key="new-form" date={date} entry={null} suggestions={suggestions}
-        onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
+        onSave={handleSave} onCancel={() => { setAddingNew(false); if (entries.length === 0) onClose(); }} saving={saving} />}
 
       {!addingNew && (
         <div className="card-actions" style={{ marginTop: 16 }}>
