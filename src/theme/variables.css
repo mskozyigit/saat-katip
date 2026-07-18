@@ -458,13 +458,18 @@
 /* --- Üst: Büyük zaman göstergesi --- */
 .circular-clock__top {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
   padding: 20px 20px 12px;
   background: #252729;
 }
 
 .circular-clock__time-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.circular-clock__time-digits {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -497,23 +502,24 @@
   line-height: 1;
 }
 
-/* ÖÖ / ÖS butonları */
+/* AM / PM butonları — zamanın altında yatay */
 .circular-clock__ampm {
   display: flex;
-  flex-direction: column;
   gap: 4px;
+  margin-top: 8px;
 }
 
 .circular-clock__ampm-btn {
-  padding: 5px 10px;
+  padding: 4px 8px;
   border: 1px solid #5F6368;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: #5F6368;
   cursor: pointer;
   transition: all 0.15s;
+  line-height: 1.2;
 }
 
 .circular-clock__ampm-btn.active {

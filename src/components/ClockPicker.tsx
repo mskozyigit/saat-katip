@@ -226,29 +226,31 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
         {/* --- Üst: Büyük zaman göstergesi + AM/PM --- */}
         <div className="circular-clock__top">
           <div className="circular-clock__time-display">
-            <button
-              className={`circular-clock__time-digit${mode === 'hour' ? ' active' : ''}`}
-              onClick={() => setMode('hour')}
-            >
-              {hh}
-            </button>
-            <span className="circular-clock__time-colon">:</span>
-            <button
-              className={`circular-clock__time-digit${mode === 'minute' ? ' active' : ''}`}
-              onClick={() => setMode('minute')}
-            >
-              {mm}
-            </button>
-          </div>
-          <div className="circular-clock__ampm">
-            <button
-              className={`circular-clock__ampm-btn${!isPM ? ' active' : ''}`}
-              onClick={() => setSelectedHour24(to24h(selectedHour12, false))}
-            >ÖÖ</button>
-            <button
-              className={`circular-clock__ampm-btn${isPM ? ' active' : ''}`}
-              onClick={() => setSelectedHour24(to24h(selectedHour12, true))}
-            >ÖS</button>
+            <div className="circular-clock__time-digits">
+              <button
+                className={`circular-clock__time-digit${mode === 'hour' ? ' active' : ''}`}
+                onClick={() => setMode('hour')}
+              >
+                {hh}
+              </button>
+              <span className="circular-clock__time-colon">:</span>
+              <button
+                className={`circular-clock__time-digit${mode === 'minute' ? ' active' : ''}`}
+                onClick={() => setMode('minute')}
+              >
+                {mm}
+              </button>
+            </div>
+            <div className="circular-clock__ampm">
+              <button
+                className={`circular-clock__ampm-btn${!isPM ? ' active' : ''}`}
+                onClick={() => setSelectedHour24(to24h(selectedHour12, false))}
+              >AM</button>
+              <button
+                className={`circular-clock__ampm-btn${isPM ? ' active' : ''}`}
+                onClick={() => setSelectedHour24(to24h(selectedHour12, true))}
+              >PM</button>
+            </div>
           </div>
         </div>
 
