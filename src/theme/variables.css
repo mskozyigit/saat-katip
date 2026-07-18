@@ -426,7 +426,7 @@
 .clock-picker-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -444,7 +444,7 @@
   border-radius: 20px;
   width: 320px;
   max-width: 92vw;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
   animation: slideUp 0.2s ease;
   overflow: hidden;
 }
@@ -454,37 +454,84 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-.circular-clock__header {
+/* --- Üst: Büyük zaman göstergesi --- */
+.circular-clock__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
+  padding: 20px 24px 12px;
+  background: #F8FAFC;
   border-bottom: 1px solid var(--color-grid-line);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-text);
 }
 
-.circular-clock__close {
+.circular-clock__time-display {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.circular-clock__time-digit {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 38px;
+  font-weight: 300;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #D1D5DB;
   cursor: pointer;
-  color: var(--color-text-secondary);
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 0 4px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
   line-height: 1;
 }
 
-.circular-clock__close:hover {
-  background: var(--color-grid-hour);
+.circular-clock__time-digit.active {
+  color: #1F2937;
+  font-weight: 500;
 }
 
-/* Saat kadranı konteyneri */
+.circular-clock__time-digit:hover {
+  background: #E5E7EB;
+}
+
+.circular-clock__time-colon {
+  font-size: 38px;
+  font-weight: 300;
+  color: #9CA3AF;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+/* ÖÖ / ÖS butonları */
+.circular-clock__ampm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.circular-clock__ampm-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--color-grid-line);
+  border-radius: 8px;
+  background: white;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.circular-clock__ampm-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* --- Saat kadranı --- */
 .circular-clock__face {
   display: flex;
   justify-content: center;
-  padding: 8px 0 0 0;
+  padding: 12px 0 8px;
+  background: #ffffff;
 }
 
 .circular-clock__face svg {
@@ -493,51 +540,33 @@
   height: auto;
 }
 
-/* Mod butonları (Saat / Dakika) */
-.circular-clock__modes {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding: 10px 18px;
-}
-
-.circular-clock__mode-btn {
-  padding: 10px 24px;
-  border: 1px solid var(--color-grid-line);
-  border-radius: 20px;
-  background: white;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.circular-clock__mode-btn.active {
-  background: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
-}
-
-/* ÖÖ/ÖS (AM/PM) butonu */
-.circular-clock__mode-btn.ampm {
-  min-width: 44px;
-  padding: 10px 14px;
-  font-weight: 600;
-  border-radius: 20px;
-  background: var(--color-suggestion-bg);
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-/* Onay butonu */
+/* --- Alt: İptal / Onayla --- */
 .circular-clock__footer {
-  padding: 10px 18px 16px;
+  display: flex;
+  gap: 12px;
+  padding: 12px 24px 20px;
   border-top: 1px solid var(--color-grid-line);
 }
 
+.circular-clock__cancel {
+  flex: 1;
+  padding: 14px;
+  background: var(--color-grid-hour);
+  color: var(--color-text);
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.circular-clock__cancel:hover {
+  background: #E5E7EB;
+}
+
 .circular-clock__confirm {
-  width: 100%;
+  flex: 1;
   padding: 14px;
   background: var(--color-primary);
   color: white;
@@ -546,7 +575,7 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s;
 }
 
 .circular-clock__confirm:hover {

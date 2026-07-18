@@ -26,36 +26,29 @@ function angleFromCenter(cx: number, cy: number, px: number, py: number): number
   return deg;
 }
 
-/** 24s → 12s (0→12, 13→1, ...) */
 function to12h(h24: number): number {
   const h = h24 % 12;
   return h === 0 ? 12 : h;
 }
 
-/** 12s + am/pm → 24s */
 function to24h(h12: number, isPM: boolean): number {
   if (h12 === 12) return isPM ? 12 : 0;
   return isPM ? h12 + 12 : h12;
 }
 
-/** 12 saatlik pozisyona göre açı (saat 12 üstte = 0°) */
 function hourToAngle(h12: number): number {
-  // 12 → 0°, 1 → 30°, 2 → 60°, ...
   return ((h12 % 12) / 12) * 360;
 }
 
-/** Açı → 12 saat (1..12) */
 function angleTo12Hour(angle: number): number {
   const h = Math.round((angle / 360) * 12) % 12;
   return h === 0 ? 12 : h;
 }
 
-/** Dakika → açı (0 üstte) */
 function minuteToAngle(min: number): number {
   return (min / 60) * 360;
 }
 
-/** Açı → dakika (0..59) */
 function angleToMinute(angle: number): number {
   return Math.round((angle / 360) * 60) % 60;
 }
@@ -79,12 +72,11 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
   const isPM = selectedHour24 >= 12;
   const selectedHour12 = to12h(selectedHour24);
 
-  const SIZE = 300;
+  const SIZE = 280;
   const CX = SIZE / 2;
   const CY = SIZE / 2;
-  const R = 120;           // saat/dakika işaretlerinin bulunduğu halka yarıçapı
-  const TICK_R = R - 10;   // tick işaretlerinin ucu
-  const HAND_R = R - 22;   // ibre ucu
+  const R = 110;
+  const HAND_R = R - 20;
 
   const confirm = useCallback(() => {
     onChange(`${String(selectedHour24).padStart(2, '0')}:${String(selectedMinute).padStart(2, '0')}`);
@@ -164,7 +156,7 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
 
   // --- Saat işaretleri (12 adet) ---
   const hourMarkers = Array.from({ length: 12 }, (_, i) => {
-    const h12 = i === 0 ? 12 : i; // 12, 1, 2, ..., 11
+    const h12 = i === 0 ? 12 : i;
     const angle = hourToAngle(h12);
     const rad = toRad(angle - 90);
     const tx = CX + R * Math.cos(rad);
@@ -177,26 +169,22 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
   const minuteMarkers = Array.from({ length: 60 }, (_, m) => {
     const angle = minuteToAngle(m);
     const rad = toRad(angle - 90);
-    // Her 5. dakikada uzun çizgi + rakam, diğerlerinde kısa çizgi
     const isMajor = m % 5 === 0;
-    const rStart = isMajor ? R - 8 : R - 4;
+    const rStart = isMajor ? R - 10 : R - 4;
     const rEnd = R;
     const x1 = CX + rStart * Math.cos(rad);
     const y1 = CY + rStart * Math.sin(rad);
     const x2 = CX + rEnd * Math.cos(rad);
     const y2 = CY + rEnd * Math.sin(rad);
-    // Rakam pozisyonu (halkanın biraz içinde)
-    const lr = R - 16;
+    const lr = R - 18;
     const lx = CX + lr * Math.cos(rad);
     const ly = CY + lr * Math.sin(rad);
     const isSelected = mode === 'minute' && m === selectedMinute;
     return { m, x1, y1, x2, y2, lx, ly, isMajor, isSelected };
   });
 
-  // AM/PM toggle
-  const toggleAMPM = () => {
-    setSelectedHour24(to24h(selectedHour12, !isPM));
-  };
+  const hh = String(selectedHour24).padStart(2, '0');
+  const mm = String(selectedMinute).padStart(2, '0');
 
   return (
     <div
@@ -204,11 +192,36 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="circular-clock" role="dialog" aria-label="Saat seçici">
-        <div className="circular-clock__header">
-          <span>Saat Seç</span>
-          <button className="circular-clock__close" onClick={onClose}>✕</button>
+        {/* --- Üst: Büyük zaman göstergesi + AM/PM --- */}
+        <div className="circular-clock__top">
+          <div className="circular-clock__time-display">
+            <button
+              className={`circular-clock__time-digit${mode === 'hour' ? ' active' : ''}`}
+              onClick={() => setMode('hour')}
+            >
+              {hh}
+            </button>
+            <span className="circular-clock__time-colon">:</span>
+            <button
+              className={`circular-clock__time-digit${mode === 'minute' ? ' active' : ''}`}
+              onClick={() => setMode('minute')}
+            >
+              {mm}
+            </button>
+          </div>
+          <div className="circular-clock__ampm">
+            <button
+              className={`circular-clock__ampm-btn${!isPM ? ' active' : ''}`}
+              onClick={() => setSelectedHour24(to24h(selectedHour12, false))}
+            >ÖÖ</button>
+            <button
+              className={`circular-clock__ampm-btn${isPM ? ' active' : ''}`}
+              onClick={() => setSelectedHour24(to24h(selectedHour12, true))}
+            >ÖS</button>
+          </div>
         </div>
 
+        {/* --- Saat kadranı --- */}
         <div className="circular-clock__face">
           <svg
             ref={svgRef}
@@ -217,23 +230,23 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
             height={SIZE}
             style={{ touchAction: 'none', cursor: 'pointer', display: 'block' }}
           >
-            {/* Halka arkaplanı */}
-            <circle cx={CX} cy={CY} r={R} fill="none" stroke="#F3F4F6" strokeWidth="32" />
+            {/* Halka */}
+            <circle cx={CX} cy={CY} r={R} fill="none" stroke="#E5E7EB" strokeWidth="28" />
 
             {mode === 'hour' ? (
-              /* ---- SAAT MODU: 12 rakam ---- */
+              /* ---- SAAT MODU ---- */
               <>
                 {hourMarkers.map(({ label, tx, ty, isSelected }) => (
                   <g key={`h-${label}`}>
                     {isSelected && (
-                      <circle cx={tx} cy={ty} r="22" fill="#2563EB" opacity="0.12" />
+                      <circle cx={tx} cy={ty} r="22" fill="#2563EB" />
                     )}
                     <text
                       x={tx} y={ty}
                       textAnchor="middle" dominantBaseline="central"
                       fontSize={18}
-                      fontWeight={isSelected ? 700 : 400}
-                      fill={isSelected ? '#2563EB' : '#374151'}
+                      fontWeight={500}
+                      fill={isSelected ? '#ffffff' : '#374151'}
                       style={{ pointerEvents: 'none', userSelect: 'none' }}
                     >
                       {label}
@@ -242,30 +255,25 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
                 ))}
               </>
             ) : (
-              /* ---- DAKİKA MODU: 60 çizgi ---- */
+              /* ---- DAKİKA MODU ---- */
               <>
                 {minuteMarkers.map(({ m, x1, y1, x2, y2, lx, ly, isMajor, isSelected }) => (
                   <g key={`m-${m}`}>
-                    {/* Seçili dakika highlight */}
                     {isSelected && (
-                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r="20" fill="#2563EB" opacity="0.15" />
+                      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r="22" fill="#2563EB" />
                     )}
-                    {/* Çizgi */}
                     <line
                       x1={x1} y1={y1} x2={x2} y2={y2}
-                      stroke={isSelected ? '#2563EB' : isMajor ? '#9CA3AF' : '#D1D5DB'}
-                      strokeWidth={isMajor ? 2 : 1}
+                      stroke={isSelected ? '#ffffff' : isMajor ? '#9CA3AF' : '#D1D5DB'}
+                      strokeWidth={isSelected ? 3 : isMajor ? 2 : 1}
                       strokeLinecap="round"
                       style={{ pointerEvents: 'none' }}
                     />
-                    {/* 5'in katlarında rakam */}
-                    {isMajor && (
+                    {isMajor && !isSelected && (
                       <text
                         x={lx} y={ly}
                         textAnchor="middle" dominantBaseline="central"
-                        fontSize={11}
-                        fontWeight={isSelected ? 700 : 500}
-                        fill={isSelected ? '#2563EB' : '#6B7280'}
+                        fontSize={11} fontWeight={500} fill="#6B7280"
                         style={{ pointerEvents: 'none', userSelect: 'none' }}
                       >
                         {String(m).padStart(2, '0')}
@@ -276,55 +284,21 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
               </>
             )}
 
-            {/* Merkez: seçili zaman */}
-            <circle cx={CX} cy={CY} r="44" fill="white" stroke="#E5E7EB" strokeWidth="1" />
-            <text
-              x={CX} y={CY - 6}
-              textAnchor="middle" dominantBaseline="central"
-              fontSize={24} fontWeight={700} fill="#1F2937"
-              style={{ pointerEvents: 'none', userSelect: 'none' }}
-            >
-              {String(selectedHour24).padStart(2, '0')}:{String(selectedMinute).padStart(2, '0')}
-            </text>
-            <text
-              x={CX} y={CY + 16}
-              textAnchor="middle" dominantBaseline="central"
-              fontSize={10} fill="#9CA3AF"
-              style={{ pointerEvents: 'none', userSelect: 'none' }}
-            >
-              {mode === 'hour' ? 'saat seç' : 'dakika seç'}
-            </text>
-
-            {/* İbre (ortadan seçili değere doğru çizgi) */}
+            {/* İbre çizgisi */}
             <line
               x1={CX} y1={CY}
               x2={handX} y2={handY}
-              stroke="#2563EB" strokeWidth="3" strokeLinecap="round"
+              stroke="#2563EB" strokeWidth="2" strokeLinecap="round"
               style={{ pointerEvents: 'none' }}
             />
-            {/* İbre ucu noktası */}
-            <circle cx={handX} cy={handY} r="8" fill="#2563EB" style={{ pointerEvents: 'none' }} />
+            {/* Merkez nokta */}
+            <circle cx={CX} cy={CY} r="6" fill="#2563EB" style={{ pointerEvents: 'none' }} />
           </svg>
         </div>
 
-        {/* Mod + AM/PM */}
-        <div className="circular-clock__modes">
-          <button
-            className={`circular-clock__mode-btn${mode === 'hour' ? ' active' : ''}`}
-            onClick={() => setMode('hour')}
-          >Saat</button>
-          <button
-            className={`circular-clock__mode-btn${mode === 'minute' ? ' active' : ''}`}
-            onClick={() => setMode('minute')}
-          >Dakika</button>
-          {mode === 'hour' && (
-            <button className="circular-clock__mode-btn ampm" onClick={toggleAMPM}>
-              {isPM ? 'ÖS' : 'ÖÖ'}
-            </button>
-          )}
-        </div>
-
+        {/* --- Alt: İptal / Onayla --- */}
         <div className="circular-clock__footer">
+          <button className="circular-clock__cancel" onClick={onClose}>İptal</button>
           <button className="circular-clock__confirm" onClick={confirm}>Onayla</button>
         </div>
       </div>
