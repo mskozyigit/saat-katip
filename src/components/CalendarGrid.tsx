@@ -8,6 +8,7 @@
 
 import { useState, useMemo } from 'react';
 import type { CalendarViewMode, WorkEntry } from '../types';
+import { useServerTime } from '../hooks/useServerTime';
 
 interface CalendarGridProps {
   entries: WorkEntry[];
@@ -28,9 +29,11 @@ const DAY_NAMES = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps) {
   const [viewMode, setViewMode] = useState<CalendarViewMode>('7day');
   const [offset, setOffset] = useState(0); // bugünden kaç gün ileri/geri
+  const { now: serverNow } = useServerTime(); // Clock Skew koruması
 
   const days = useMemo(() => {
-    const today = new Date();
+    // Sunucu zamanını kullanarak "bugün"ü belirle (cihaz saati hatalı olabilir)
+    const today = new Date(serverNow);
     today.setHours(0, 0, 0, 0);
 
     let dayCount = 7;
@@ -45,15 +48,16 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
       d.setDate(d.getDate() + i);
       return d;
     });
-  }, [viewMode, offset]);
+  }, [viewMode, offset, serverNow]);
 
   /** Grid üzerinde entry bloğunun konumunu hesaplar */
   function getEntryBlockStyle(entry: WorkEntry): React.CSSProperties | null {
     const startDate = new Date(entry.start_time);
     const endDate = new Date(entry.end_time);
 
-    const startHour = startDate.getUTCHours() + startDate.getUTCMinutes() / 60;
-    const endHour = endDate.getUTCHours() + endDate.getUTCMinutes() / 60;
+    // Yerel saat kullan (getHours/getMinutes) — kullanıcının saat dilimine göre
+    const startHour = startDate.getHours() + startDate.getMinutes() / 60;
+    const endHour = endDate.getHours() + endDate.getMinutes() / 60;
 
     // Görünür aralık: 05:00–20:00
     const visibleStart = Math.max(startHour, 5);
@@ -70,7 +74,7 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
     };
   }
 
-  const todayStr = toISODate(new Date());
+  const todayStr = toISODate(serverNow);
 
   return (
     <div className="calendar-grid">

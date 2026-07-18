@@ -58,11 +58,14 @@ function formatMinutes(totalMin: number): string {
 function extractTime(entry: WorkEntry): { start: string; end: string; isNextDay: boolean } {
   const sd = new Date(entry.start_time);
   const ed = new Date(entry.end_time);
-  const start = `${String(sd.getUTCHours()).padStart(2, '0')}:${String(sd.getUTCMinutes()).padStart(2, '0')}`;
-  const end = `${String(ed.getUTCHours()).padStart(2, '0')}:${String(ed.getUTCMinutes()).padStart(2, '0')}`;
-  const isNextDay = ed.getUTCDate() !== sd.getUTCDate() || ed.getUTCMonth() !== sd.getUTCMonth() || ed.getUTCFullYear() !== sd.getUTCFullYear();
-  const sm = sd.getUTCHours() * 60 + sd.getUTCMinutes();
-  const em = ed.getUTCHours() * 60 + ed.getUTCMinutes();
+  const start = `${String(sd.getHours()).padStart(2, '0')}:${String(sd.getMinutes()).padStart(2, '0')}`;
+  const end = `${String(ed.getHours()).padStart(2, '0')}:${String(ed.getMinutes()).padStart(2, '0')}`;
+  // Yerel saatte tarih farkı veya saat karşılaştırması ile +1 gün tespiti
+  const isNextDay = ed.getDate() !== sd.getDate()
+    || ed.getMonth() !== sd.getMonth()
+    || ed.getFullYear() !== sd.getFullYear();
+  const sm = sd.getHours() * 60 + sd.getMinutes();
+  const em = ed.getHours() * 60 + ed.getMinutes();
   return { start, end, isNextDay: isNextDay || em <= sm };
 }
 
@@ -112,10 +115,20 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
     if (!startTime || !endTime) return;
     const s = parseTime(startTime), e = parseTime(endTime);
     if (!s || !e) return;
-    const startISO = `${date}T${String(s.hh).padStart(2, '0')}:${String(s.mm).padStart(2, '0')}:00+03:00`;
-    const etm = e.hh * 60 + e.mm, stm = s.hh * 60 + s.mm;
-    const ed = etm <= stm ? (() => { const n = new Date(date + 'T00:00:00'); n.setDate(n.getDate() + 1); return n.toISOString().slice(0, 10); })() : date;
-    const endISO = `${ed}T${String(e.hh).padStart(2, '0')}:${String(e.mm).padStart(2, '0')}:00+03:00`;
+
+    // Tarayıcının yerel saat dilimini kullanarak ISO timestamp oluştur
+    // (new Date() ile yerel saat → toISOString() ile UTC'ye dönüşüm otomatik)
+    const localStart = new Date(`${date}T${String(s.hh).padStart(2, '0')}:${String(s.mm).padStart(2, '0')}:00`);
+    const startISO = localStart.toISOString();
+
+    const etm = e.hh * 60 + e.mm;
+    const stm = s.hh * 60 + s.mm;
+    const ed = etm <= stm
+      ? (() => { const n = new Date(localStart); n.setDate(n.getDate() + 1); return n.toISOString().slice(0, 10); })()
+      : date;
+    const localEnd = new Date(`${ed}T${String(e.hh).padStart(2, '0')}:${String(e.mm).padStart(2, '0')}:00`);
+    const endISO = localEnd.toISOString();
+
     await onSave({ id: entry?.id, logical_date: date, start_time: startISO, end_time: endISO, break_minutes: breakMinutes });
   };
 
@@ -192,9 +205,12 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
 
   // Onerileri mount'ta bir kere yukle (basari/basarisiz fark etmez)
   useEffect(() => {
+    let cancelled = false;
     generateSuggestions()
-      .then(s => { if (s) setSuggestions(s); })
+      .then(s => { if (!cancelled && s) setSuggestions(s); })
       .catch(() => { /* cold start - oneri yok */ });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // sadece mount'ta bir kere
 
   const handleSave = async (input: WorkEntryInput): Promise<WorkEntry> => {

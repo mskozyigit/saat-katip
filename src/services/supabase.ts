@@ -13,7 +13,7 @@
 
 /// <reference types="vite/client" />
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, type Session } from '@supabase/supabase-js';
 import type { WorkEntry, WorkEntryInput } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ export async function getSession() {
  * Auth durum değişikliklerini dinler.
  * ÖNEMLİ: Bileşen unmount olduğunda unsubscribe() çağrılmalı (memory leak önlemi).
  */
-export function onAuthStateChange(callback: (session: unknown) => void) {
+export function onAuthStateChange(callback: (session: Session | null) => void) {
   const { data } = supabase.auth.onAuthStateChange((_event, session) => {
     callback(session);
   });
@@ -213,12 +213,17 @@ export async function saveWorkEntry(input: WorkEntryInput): Promise<WorkEntry> {
 
 /**
  * Kaydi siler.
+ * RLS ek güvenlik katmanı: kullanıcı sadece kendi kaydını silebilir.
  */
 export async function deleteWorkEntry(id: string): Promise<void> {
+  const userId = (await supabase.auth.getUser()).data.user?.id;
+  if (!userId) throw new Error('Kullanici giris yapmamis.');
+
   const { error } = await supabase
     .from('work_entries')
     .delete()
-    .eq('id', id);
+    .eq('id', id)
+    .eq('user_id', userId);  // RLS ek guvenlik
 
   if (error) throw error;
 }

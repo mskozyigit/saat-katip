@@ -20,11 +20,11 @@ import CalendarGrid from '../components/CalendarGrid';
 import DailyEntryCard from '../components/DailyEntryCard';
 import { useWorkEntries } from '../hooks/useWorkEntries';
 import { useAuth } from '../hooks/useAuth';
+import { useServerTime } from '../hooks/useServerTime';
 import type { WorkEntry, WorkEntryInput } from '../types';
 
 /** Bugünden itibaren bir haftalık aralık döndürür */
-function getDefaultRange(): { start: string; end: string } {
-  const today = new Date();
+function getDefaultRange(today: Date): { start: string; end: string } {
   const start = new Date(today);
   start.setDate(start.getDate() - today.getDay() + 1); // Pazartesi
   const end = new Date(start);
@@ -39,6 +39,7 @@ function getDefaultRange(): { start: string; end: string } {
 export default function HomePage() {
   const { logout } = useAuth();
   const { entries, loading, loadEntries, getEntriesByDate, saveEntry, removeEntry } = useWorkEntries();
+  const { now: serverNow } = useServerTime(); // Clock Skew koruması
 
   // Modal durumu
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -47,9 +48,9 @@ export default function HomePage() {
 
   // İlk yükleme
   useEffect(() => {
-    const range = getDefaultRange();
+    const range = getDefaultRange(serverNow);
     loadEntries(range.start, range.end);
-  }, [loadEntries]);
+  }, [loadEntries, serverNow]);
 
   // Gün sütununa tıklandığında
   const handleDayClick = useCallback(async (date: string) => {

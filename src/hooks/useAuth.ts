@@ -27,7 +27,7 @@ export function useAuth(): UseAuthReturn {
     // Auth durum değişikliklerini dinle
     // 🟢 Memory leak önlemi: cleanup'ta unsubscribe çağrılır
     const unsubscribe = onAuthStateChange((newSession) => {
-      setSession(newSession as Session | null);
+      setSession(newSession);
     });
 
     return () => {
