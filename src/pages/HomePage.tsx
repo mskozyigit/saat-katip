@@ -126,9 +126,9 @@ export default function HomePage() {
       </IonContent>
 
       {/* Günlük Kayıt Modalı — alt sayfa (bottom sheet) */}
+      {selectedDate !== null && (
       <IonModal
-        key={selectedDate ?? 'closed'}
-        isOpen={selectedDate !== null}
+        isOpen={true}
         onDidDismiss={handleCloseModal}
         initialBreakpoint={0.9}
         breakpoints={[0, 0.6, 0.9]}
@@ -163,6 +163,7 @@ export default function HomePage() {
           )}
         </div>
       </IonModal>
+      )}
     </IonPage>
   );
 }
