@@ -1,34 +1,60 @@
 /* ============================================================================
-   Saat Katip — CSS Değişkenleri ve Tema
+   Saat Katip — CSS Değişkenleri ve Tema (Android Material)
    ============================================================================ */
 
 :root {
-  /* Ana renk paleti */
-  --color-primary: #2563EB;
-  --color-primary-light: #3B82F6;
-  --color-primary-dark: #1D4ED8;
+  /* Material Design ana renk paleti */
+  --color-primary: #1976D2;
+  --color-primary-light: #42A5F5;
+  --color-primary-dark: #1565C0;
 
-  /* Öneri (suggestion) stili için mavi ton */
-  --color-suggestion: #2563EB;
-  --color-suggestion-bg: #EFF6FF;
+  /* Öneri (suggestion) stili */
+  --color-suggestion: #1976D2;
+  --color-suggestion-bg: #E3F2FD;
 
   /* Metin renkleri */
-  --color-text: #1F2937;
-  --color-text-secondary: #6B7280;
+  --color-text: #212121;
+  --color-text-secondary: #757575;
 
   /* Grid / Ajanda renkleri */
-  --color-grid-line: #E5E7EB;
-  --color-grid-hour: #F3F4F6;
-  --color-grid-today: #DBEAFE;
+  --color-grid-line: #E0E0E0;
+  --color-grid-hour: #F5F5F5;
+  --color-grid-today: #BBDEFB;
 
-  /* İyonik değişkenleri (gerekirse override) */
-  --ion-color-primary: #2563EB;
+  /* Yüzey / Kart renkleri */
+  --color-surface: #FFFFFF;
+  --color-background: #FAFAFA;
+
+  /* İyonik değişkenleri */
+  --ion-color-primary: #1976D2;
   --ion-color-primary-contrast: #ffffff;
-  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ion-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Material gölgeler (elevation) */
+  --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.10);
+  --elevation-4: 0 6px 12px rgba(0,0,0,0.18), 0 4px 8px rgba(0,0,0,0.12);
+
+  /* Android tipografisi */
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Genel sayfa arkaplanı */
+ion-content {
+  --background: var(--color-background);
+}
+
+ion-toolbar {
+  --background: var(--color-primary);
+  --color: #ffffff;
+  --border-style: none;
+  box-shadow: var(--elevation-2);
 }
 
 /* --------------------------------------------------------------------------
-   Ajanda Grid Stilleri
+   Ajanda Grid Stilleri (Material)
    -------------------------------------------------------------------------- */
 
 .calendar-grid {
@@ -36,6 +62,7 @@
   flex-direction: column;
   height: 100%;
   user-select: none;
+  background: var(--color-surface);
 }
 
 .calendar-header {
@@ -43,6 +70,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
+  background: var(--color-surface);
   border-bottom: 1px solid var(--color-grid-line);
 }
 
@@ -63,22 +91,27 @@
   background: var(--color-grid-hour);
   border-radius: 8px;
   overflow: hidden;
+  box-shadow: var(--elevation-1);
 }
 
 .calendar-view-toggle button {
-  padding: 6px 14px;
+  padding: 8px 16px;
   border: none;
   background: transparent;
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .calendar-view-toggle button.active {
   background: var(--color-primary);
   color: #ffffff;
+  box-shadow: var(--elevation-1);
 }
 
 /* Saat ekseni grid gövdesi */
@@ -219,14 +252,17 @@
   border: 1px solid var(--color-grid-line);
   border-radius: 8px;
   font-size: 18px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Roboto', monospace;
   letter-spacing: 1px;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.2s ease;
+  background: var(--color-surface);
 }
 
 .time-input:focus {
   outline: none;
   border-color: var(--color-primary);
+  border-width: 2px;
+  padding: 11px 13px;
 }
 
 /* 🟦 Öneri durumu (suggestion) stili */
@@ -271,21 +307,22 @@
   padding: 12px 8px;
   border: 1px solid var(--color-grid-line);
   border-radius: 8px;
-  background: white;
+  background: var(--color-surface);
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   text-align: center;
-  /* Mobil dokunma hedefi */
   min-height: 44px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .break-btn.selected {
   background: var(--color-primary);
   color: white;
   border-color: var(--color-primary);
+  box-shadow: var(--elevation-1);
 }
 
 /* 🟦 Mola öneri durumu */
@@ -320,7 +357,7 @@
   margin-left: 8px;
 }
 
-/* Kart aksiyon butonları */
+/* Kart aksiyon butonları (Material) */
 .card-actions {
   display: flex;
   gap: 10px;
@@ -331,17 +368,20 @@
   flex: 1;
   padding: 14px;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  /* Mobil dokunma hedefi */
   min-height: 48px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .btn-save {
   background: var(--color-primary);
   color: white;
+  box-shadow: var(--elevation-1);
 }
 
 .btn-cancel {
@@ -349,27 +389,30 @@
   color: var(--color-text);
 }
 
-/* Çalışma Ekle butonu */
+/* Çalışma Ekle butonu (Material) */
 .add-entry-btn {
   width: 100%;
   padding: 16px 14px;
-  border: 2px dashed var(--color-primary);
+  border: 2px dashed #BDBDBD;
   border-radius: 12px;
-  background: var(--color-suggestion-bg);
-  font-size: 16px;
-  font-weight: 600;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--color-primary);
   cursor: pointer;
   margin-top: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.2s ease;
   min-height: 52px;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .add-entry-btn:hover {
-  background: #DBEAFE;
+  background: var(--color-suggestion-bg);
 }
 
 /* --------------------------------------------------------------------------
@@ -442,8 +485,8 @@
 .circular-clock {
   background: #2D2F33;
   border-radius: 16px;
-  width: 420px;
-  max-width: 94vw;
+  width: 620px;
+  max-width: 96vw;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
   animation: slideUp 0.2s ease;
   overflow: hidden;

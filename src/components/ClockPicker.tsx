@@ -95,11 +95,11 @@ export default function ClockPicker({ value, onChange, onClose }: ClockPickerPro
   const isPM = selectedHour24 >= 12;
   const selectedHour12 = to12h(selectedHour24);
 
-  const SIZE = 280;
+  const SIZE = 420;
   const CX = SIZE / 2;
   const CY = SIZE / 2;
-  const R = 108;
-  const HAND_R = R - 24;
+  const R = 162;
+  const HAND_R = R - 32;
 
   const confirm = useCallback(() => {
     onChange(`${String(selectedHour24).padStart(2, '0')}:${String(selectedMinute).padStart(2, '0')}`);

@@ -99,7 +99,7 @@ export default function HomePage() {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Saat Katip</IonTitle>
+          <IonTitle style={{ fontWeight: 500, letterSpacing: '0.5px', fontSize: 20 }}>Saat Katip</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={logout}>
               <IonIcon slot="icon-only" icon={logOutOutline} />
