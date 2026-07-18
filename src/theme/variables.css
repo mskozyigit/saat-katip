@@ -342,8 +342,8 @@ ion-fab-button {
   align-items: flex-start;
   justify-content: flex-end;
   padding: 0 8px;
-  font-size: 11px;
-  color: var(--color-text-secondary);
+  font-size: var(--md-typescale-label-small);
+  color: var(--md-on-surface-variant);
   position: relative;
   top: -6px;
 }
@@ -559,12 +559,12 @@ ion-fab-button {
 .total-display {
   margin-top: 16px;
   padding: 14px 16px;
-  background: var(--color-grid-hour);
-  border-radius: 8px;
+  background: var(--md-surface-container-low);
+  border-radius: var(--md-radius-sm);
   text-align: center;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-text);
+  font-size: var(--md-typescale-title-medium);
+  font-weight: 500;
+  color: var(--md-on-surface);
 }
 
 /* +1 gün etiketi (gece yarısı geçişi) */
@@ -572,8 +572,8 @@ ion-fab-button {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
-  color: var(--color-primary);
+  font-size: var(--md-typescale-label-small);
+  color: var(--md-on-primary-container);
   background: var(--color-suggestion-bg);
   padding: 2px 8px;
   border-radius: 12px;
