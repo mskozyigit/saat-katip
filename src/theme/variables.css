@@ -494,8 +494,8 @@ ion-fab-button {
 
 /* Öneri ikonu */
 .suggestion-icon {
-  color: var(--color-suggestion);
-  font-size: 14px;
+  color: var(--md-primary);
+  font-size: var(--md-typescale-label-large);
   margin-left: 4px;
 }
 
@@ -871,7 +871,7 @@ ion-fab-button {
 }
 
 .circular-clock__cancel:hover {
-  background: rgba(138, 180, 248, 0.1);
+  background: rgba(138, 180, 248, 0.08);
 }
 
 .circular-clock__confirm {
@@ -888,7 +888,7 @@ ion-fab-button {
 }
 
 .circular-clock__confirm:hover {
-  background: #A0C4FA;
+  filter: brightness(1.1);
 }
 
 /* ========================================================================
@@ -971,36 +971,4 @@ ion-fab-button {
     font-size: 12px;
     padding: 3px 8px;
   }
-}
-
-.circular-clock__cancel {
-  padding: 10px 18px;
-  background: transparent;
-  color: #8AB4F8;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.circular-clock__cancel:hover {
-  background: rgba(138, 180, 248, 0.1);
-}
-
-.circular-clock__confirm {
-  padding: 10px 24px;
-  background: #8AB4F8;
-  color: #1A1A1D;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.circular-clock__confirm:hover {
-  background: #A0C4FA;
 }
