@@ -304,16 +304,9 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
 
       {!addingNew && (
-        <>
-          <button onClick={() => setAddingNew(true)} className="add-entry-btn md-ripple">
-            <span style={{ fontSize: 22, marginRight: 8, fontWeight: 300 }}>+</span>
-            {entries.length === 0 ? 'Çalışma Ekle' : 'Yeni Kayıt Ekle'}
-          </button>
-
-          <div className="card-actions" style={{ marginTop: 16 }}>
-            <button className="btn-cancel md-ripple" onClick={onClose} style={{ width: '100%' }}>İptal</button>
-          </div>
-        </>
+        <div className="card-actions" style={{ marginTop: 16 }}>
+          <button className="btn-cancel md-ripple" onClick={onClose} style={{ width: '100%' }}>İptal</button>
+        </div>
       )}
     </div>
   );

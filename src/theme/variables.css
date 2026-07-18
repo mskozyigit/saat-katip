@@ -264,11 +264,12 @@ button {
 
 /* FAB butonu */
 ion-fab-button {
-  --background: var(--md-primary-container);
-  --color: var(--md-on-primary-container);
+  --background: var(--md-primary);
+  --color: var(--md-on-primary);
   --box-shadow: var(--md-elevation-3);
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
+  font-size: 32px;
 }
 
 /* ========================================================================
