@@ -28,18 +28,18 @@
   --md-on-error-container: #410002;
 
   /* === Material 3 Yüzey Renkleri — Yeşil tonda === */
-  --md-surface: #F6FBF2;
+  --md-surface: #DCE8CC;
   --md-on-surface: #1A1C19;
-  --md-surface-variant: #DEE5D8;
-  --md-on-surface-variant: #43483F;
-  --md-outline: #73796E;
-  --md-outline-variant: #C2C9BD;
+  --md-surface-variant: #C8D6B8;
+  --md-on-surface-variant: #3E4835;
+  --md-outline: #6E7864;
+  --md-outline-variant: #BCC8AC;
 
-  --md-surface-container-lowest: #EEF5EA;
-  --md-surface-container-low: #E8F0E4;
-  --md-surface-container: #E3EBDF;
-  --md-surface-container-high: #DDE6D9;
-  --md-surface-container-highest: #D7E0D4;
+  --md-surface-container-lowest: #D2E0C0;
+  --md-surface-container-low: #CCDAB8;
+  --md-surface-container: #C6D4B0;
+  --md-surface-container-high: #C0CEA8;
+  --md-surface-container-highest: #BAC8A2;
 
   --md-inverse-surface: #2E312C;
   --md-inverse-on-surface: #EEF3EA;
@@ -206,13 +206,13 @@
    ======================================================================== */
 
 /* Sayfa ve body arkaplanı — asla beyaz olmasın */
-html, body, ion-app {
-  background: var(--md-surface-container-lowest);
+html, body, ion-app, .ion-page, ion-content {
+  background: var(--md-surface-container-lowest) !important;
 }
 
 /* Genel sayfa arkaplanı */
 ion-content {
-  --background: var(--md-surface);
+  --background: var(--md-surface-container-lowest);
 }
 
 /* Toolbar — 56dp yükseklik */

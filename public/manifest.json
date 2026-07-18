@@ -4,7 +4,7 @@
   "description": "Çalışma saati takip uygulaması",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#EEF5EA",
+  "background_color": "#D2E0C0",
   "theme_color": "#2E6A1F",
   "icons": []
 }
