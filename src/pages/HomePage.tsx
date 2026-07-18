@@ -13,8 +13,6 @@ import {
   IonButton,
   IonIcon,
   IonSpinner,
-  IonFab,
-  IonFabButton,
 } from '@ionic/react';
 import { logOutOutline } from 'ionicons/icons';
 import CalendarGrid from '../components/CalendarGrid';
@@ -139,12 +137,14 @@ export default function HomePage() {
           <CalendarGrid entries={entries} onDayClick={handleDayClick} />
         )}
 
-        {/* Çalışma Ekle butonu (FAB) */}
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={() => handleDayClick(serverNow.toISOString().slice(0, 10))}>
-            <span className="fab-plus">+</span>
-          </IonFabButton>
-        </IonFab>
+        {/* Çalışma Ekle butonu (FAB) — özel stil */}
+        <button
+          className="fab-custom"
+          onClick={() => handleDayClick(serverNow.toISOString().slice(0, 10))}
+          aria-label="Çalışma ekle"
+        >
+          <span className="fab-custom__plus">+</span>
+        </button>
       </IonContent>
 
       {/* Günlük Kayıt — React overlay (Ionic modal değil, tam kontrol) */}

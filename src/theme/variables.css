@@ -262,36 +262,40 @@ button {
   font-family: 'Roboto', sans-serif;
 }
 
-/* FAB butonu — transparan daire, sadece + işareti görünür */
-ion-fab-button {
-  --background: transparent !important;
-  --color: transparent !important;
-  --box-shadow: none !important;
-  --border-radius: 50% !important;
-  width: 90px !important;
-  height: 90px !important;
-  border: none !important;
-}
-
-ion-fab-button::part(native) {
-  border-radius: 50% !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.fab-plus {
-  font-size: 60px;
-  font-weight: 700;
-  line-height: 1;
+/* FAB — özel buton, transparan zemin, sadece + işareti */
+.fab-custom {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  padding: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fab-custom__plus {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
   color: var(--md-primary);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  -webkit-text-stroke: 3px var(--md-primary);
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.35));
+  /* çerçeve efekti için text-stroke */
+  -webkit-text-stroke: 2px var(--md-primary);
+  paint-order: stroke fill;
+}
+
+.fab-custom:active .fab-custom__plus {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transform: scale(0.95);
 }
 
 /* ========================================================================
