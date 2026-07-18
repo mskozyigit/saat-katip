@@ -5,7 +5,7 @@
 // Oneri algoritmasi sadece YENI kayit eklerken calisir.
 // ============================================================================
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { WorkEntry, DailySuggestions, FieldSuggestion, WorkEntryInput } from '../types';
 import { usePrediction } from '../hooks/usePrediction';
 import ClockPicker from './ClockPicker';
@@ -89,6 +89,15 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
   const [cpField, setCpField] = useState<'start' | 'end' | null>(null);
   const [touched, setTouched] = useState<Set<string>>(() =>
     entry ? new Set(['start', 'end', 'break']) : new Set());
+
+  // Oneriler asenkron yuklendiginde form alanlarini guncelle
+  useEffect(() => {
+    if (isNew && suggestions && !touched.has('start') && !touched.has('end')) {
+      if (suggestions.start?.value) setStartTime(suggestions.start.value as string);
+      if (suggestions.end?.value) setEndTime(suggestions.end.value as string);
+      if (suggestions.break?.value !== undefined) setBreakMinutes(suggestions.break.value as number);
+    }
+  }, [suggestions, isNew]);
 
   const ht = (f: string) => setTouched(p => new Set(p).add(f));
 
@@ -191,12 +200,12 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Onerileri yukle
-  useState(() => {
+  // Onerileri asenkron yukle (mount'ta bir kere)
+  useEffect(() => {
     if (!loaded) {
       generateSuggestions().then(s => { if (s) setSuggestions(s); setLoaded(true); });
     }
-  });
+  }, [loaded, generateSuggestions]);
 
   const handleSave = async (input: WorkEntryInput): Promise<WorkEntry> => {
     setSaving(true);
