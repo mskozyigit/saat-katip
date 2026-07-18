@@ -40,7 +40,7 @@ function getDefaultRange(today: Date): { start: string; end: string } {
 
 export default function HomePage() {
   const { logout } = useAuth();
-  const { entries, loading, loadEntries, getEntriesByDate, saveEntry, removeEntry } = useWorkEntries();
+  const { entries, loading, loadEntries, getEntriesByDate, saveEntry } = useWorkEntries();
   const { now: serverNow } = useServerTime(); // Clock Skew koruması
 
   // Modal durumu
@@ -78,15 +78,6 @@ export default function HomePage() {
     }
     return result;
   }, [saveEntry, getEntriesByDate, selectedDate]);
-
-  // Sil
-  const handleDelete = useCallback(async (id: string) => {
-    await removeEntry(id);
-    if (selectedDate) {
-      const updated = await getEntriesByDate(selectedDate);
-      setDayEntries(updated);
-    }
-  }, [removeEntry, getEntriesByDate, selectedDate]);
 
   // Modal kapat
   const handleCloseModal = useCallback(() => {
@@ -201,7 +192,6 @@ export default function HomePage() {
                     date={selectedDate}
                     entries={dayEntries}
                     onSave={handleSave}
-                    onDelete={handleDelete}
                     onClose={handleCloseModal}
                   />
                 </ErrorBoundary>

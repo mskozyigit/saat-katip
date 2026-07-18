@@ -14,7 +14,6 @@ interface DailyEntryCardProps {
   date: string;
   entries: WorkEntry[];
   onSave: (input: WorkEntryInput) => Promise<WorkEntry>;
-  onDelete: (id: string) => Promise<void>;
   onClose: () => void;
 }
 
@@ -223,7 +222,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
 // ============================================================================
 // Ana Bilesen
 // ============================================================================
-export default function DailyEntryCard({ date, entries, onSave, onDelete, onClose }: DailyEntryCardProps) {
+export default function DailyEntryCard({ date, entries, onSave, onClose }: DailyEntryCardProps) {
   const { generateSuggestions } = usePrediction();
   const [suggestions, setSuggestions] = useState<DailySuggestions | null>(null);
   const [saving, setSaving] = useState(false);
