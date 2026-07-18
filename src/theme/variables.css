@@ -934,6 +934,15 @@ ion-fab-button {
    Mobil uyumluluk: dar ekranda dikey dizilim
    ======================================================================== */
 @media (max-width: 560px) {
+  /* Navigasyon butonlarını gizle, swipe ile gezin */
+  .calendar-header__nav {
+    display: none;
+  }
+
+  /* Tarih aralığını ve toggle'ı ortala */
+  .calendar-header {
+    justify-content: center;
+  }
   .circular-clock {
     width: 100%;
     max-width: 100vw;
