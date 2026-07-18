@@ -245,8 +245,14 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
     setSaving(true);
     try {
       const result = await onSave(input);
-      setAddingNew(false);
-      setEditingId(null);
+      if (!input.id) {
+        // Yeni kayıt → overlay'i kapat
+        onClose();
+      } else {
+        // Düzenleme → listeye dön
+        setAddingNew(false);
+        setEditingId(null);
+      }
       return result;
     }
     finally { setSaving(false); }
