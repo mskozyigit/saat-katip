@@ -194,7 +194,10 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
   // Onerileri asenkron yukle (mount'ta bir kere)
   useEffect(() => {
     if (!loaded) {
-      generateSuggestions().then(s => { if (s) setSuggestions(s); setLoaded(true); });
+      generateSuggestions()
+        .then(s => { if (s) setSuggestions(s); })
+        .catch(() => { /* cold start veya hata - oneri yok */ })
+        .finally(() => setLoaded(true));
     }
   }, [loaded, generateSuggestions]);
 
