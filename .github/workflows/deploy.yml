@@ -1,0 +1,64 @@
+# ============================================================================
+# GitHub Actions — Ionic React Build + GitHub Pages Deploy
+# ============================================================================
+# Her push'ta (main branch) otomatik build alır ve GitHub Pages'e deploy eder.
+# Supabase URL ve anon key, GitHub Secrets'tan enjekte edilir.
+# ============================================================================
+
+name: Build & Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # İsteğe bağlı: manuel tetikleme
+  workflow_dispatch:
+
+# GitHub Pages deploy için gerekli izinler
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Aynı anda tek bir deploy çalışmasına izin ver
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 📥 Kaynak kodu checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Node.js kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Bağımlılıkları yükle
+        run: npm ci
+
+      - name: 🔨 Build (TypeScript + Vite)
+        run: npm run build
+        env:
+          # Supabase yapılandırması GitHub Secrets'tan gelir
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: ⚙️ GitHub Pages ayarları
+        uses: actions/configure-pages@v4
+
+      - name: 📤 GitHub Pages artifact yükle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: 🚀 GitHub Pages'e deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,170 @@
+{
+  "pipeline": {
+    "name": "Saat Katip - Akilli Pipeline",
+    "description": "Hedefleri sen gir, adimlari pipeline cikarsin. Her adim sonrasi otomatik test yapilir."
+  },
+  "goals": [
+    {
+      "id": "deploy-decision",
+      "goal": "Deploy stratejisi: GitHub Pages mi, baska bir platform mu?",
+      "run": null,
+      "verify": {
+        "type": "decision",
+        "question": "Proje nereye deploy edilecek?",
+        "options": [
+          {"key": "github-pages", "label": "GitHub Pages (statik SPA)", "hint": "Ucretsiz, CI/CD hazir"},
+          {"key": "vercel", "label": "Vercel", "hint": "Hizli, serbest alan adi"},
+          {"key": "netlify", "label": "Netlify", "hint": "Kolay, form handling destegi"},
+          {"key": "custom", "label": "Kendi sunucum / baska", "hint": "Manuel yapilandirma gerekir"}
+        ],
+        "default": "github-pages",
+        "preferredKey": "github-pages",
+        "timeoutSeconds": 300,
+        "storeAs": "DEPLOY_TARGET",
+        "passMessage": "Deploy hedefi belirlendi.",
+        "failMessage": "Karar alinamadi, GitHub Pages varsayilan olarak secildi."
+      }
+    },
+    {
+      "id": "type-check",
+      "goal": "TypeScript tip hatalarini bul ve duzelt",
+      "run": "npx tsc --noEmit",
+      "verify": {
+        "type": "exit-code",
+        "expected": 0,
+        "passMessage": "Tip denetimi temiz - hata yok!",
+        "failMessage": "TypeScript hatalari bulundu. Yukaridaki hatayi duzeltip tekrar dene."
+      }
+    },
+    {
+      "id": "build",
+      "goal": "Projeyi production icin derle (dist/ klasoru)",
+      "run": "npm run build",
+      "verify": {
+        "type": "file-exists",
+        "path": "dist/index.html",
+        "passMessage": "Build basarili! dist/ klasoru olusturuldu.",
+        "failMessage": "Build basarisiz! dist/index.html bulunamadi."
+      }
+    },
+    {
+      "id": "lint",
+      "goal": "Kod kalitesini ESLint ile kontrol et",
+      "run": "npm run lint",
+      "verify": {
+        "type": "exit-code-ok-warn",
+        "expected": 0,
+        "passMessage": "Lint temiz - kod kalitesi iyi!",
+        "failMessage": "Lint uyarilari var (kritik degil, devam edilebilir)."
+      },
+      "continueOnFail": true
+    },
+    {
+      "id": "file-check",
+      "goal": "Kritik proje dosyalarinin eksiksiz oldugunu dogrula",
+      "run": null,
+      "verify": {
+        "type": "files-exist",
+        "files": [
+          "src/App.tsx",
+          "src/main.tsx",
+          "src/components/CalendarGrid.tsx",
+          "src/components/DailyEntryCard.tsx",
+          "src/components/ClockPicker.tsx",
+          "src/hooks/useAuth.ts",
+          "src/hooks/useWorkEntries.ts",
+          "src/hooks/usePrediction.ts",
+          "src/services/supabase.ts",
+          "src/pages/HomePage.tsx",
+          "src/pages/LoginPage.tsx",
+          "src/types/index.ts",
+          "src/theme/variables.css",
+          "supabase-migration.sql",
+          ".env.example",
+          ".github/workflows/deploy.yml",
+          "public/404.html",
+          "public/manifest.json",
+          "index.html",
+          "vite.config.ts",
+          "capacitor.config.ts",
+          "ionic.config.json",
+          "package.json",
+          "tsconfig.json"
+        ],
+        "passMessage": "Tum kritik dosyalar mevcut!",
+        "failMessage": "Eksik dosya(lar) var! Yukaridaki listede EKSIK! yazanlari kontrol et."
+      }
+    },
+    {
+      "id": "build-size",
+      "goal": "Build boyutunun makul sinirlar icinde oldugunu kontrol et",
+      "run": null,
+      "verify": {
+        "type": "folder-size-max",
+        "path": "dist",
+        "maxMB": 5,
+        "passMessage": "Build boyutu normal sinirlarda.",
+        "failMessage": "Build boyutu cok buyuk! Gereksiz bagimliliklari kontrol et."
+      }
+    },
+    {
+      "id": "asset-check",
+      "goal": "Build ciktisinda CSS ve JS asset'lerinin eksiksiz oldugunu dogrula",
+      "run": null,
+      "verify": {
+        "type": "files-exist-glob",
+        "patterns": [
+          "dist/index.html",
+          "dist/404.html",
+          "dist/manifest.json",
+          "dist/assets/index-*.js",
+          "dist/assets/index-*.css"
+        ],
+        "passMessage": "Tum asset'ler eksiksiz!",
+        "failMessage": "Eksik asset var! Build tekrar calistirilabilir."
+      }
+    },
+    {
+      "id": "bundle-analyze",
+      "goal": "En buyuk JS chunk'inin 2MB altinda oldugunu kontrol et (performans)",
+      "run": null,
+      "verify": {
+        "type": "max-file-size",
+        "folderPath": "dist/assets",
+        "pattern": "*.js",
+        "maxMB": 2,
+        "passMessage": "Bundle boyutlari performans sinirlarinda.",
+        "failMessage": "Bir JS chunk'i 2MB'i asti! Code splitting yapilabilir."
+      }
+    },
+    {
+      "id": "security-check",
+      "goal": "Kaynak kodda gizli anahtar (service_role, secret) ifsasi olmadigini kontrol et",
+      "run": null,
+      "verify": {
+        "type": "grep-invert",
+        "folderPath": "src",
+        "pattern": "service_role|secret_key|SECRET|password",
+        "allowedFiles": [],
+        "passMessage": "Guvenlik taramasi temiz - gizli anahtar ifsasi yok!",
+        "failMessage": "Kaynak kodda gizli anahtar bulundu! Hemen temizlenmeli."
+      }
+    },
+    {
+      "id": "ts-strict-check",
+      "goal": "TypeScript'in strict modda calistigini ve noUnusedLocals/noUnusedParameters kurallarinin aktif oldugunu dogrula",
+      "run": null,
+      "verify": {
+        "type": "json-field-check",
+        "filePath": "tsconfig.json",
+        "fields": {
+          "compilerOptions.strict": true,
+          "compilerOptions.noUnusedLocals": true,
+          "compilerOptions.noUnusedParameters": true
+        },
+        "passMessage": "TypeScript strict kurallari aktif!",
+        "failMessage": "TypeScript strict ayarlari eksik! tsconfig.json kontrol edilmeli."
+      }
+    }
+  ]
+}

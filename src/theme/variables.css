@@ -1,0 +1,537 @@
+// ============================================================================
+// Saat Katip — CSS Değişkenleri ve Tema
+// ============================================================================
+
+:root {
+  /* Ana renk paleti */
+  --color-primary: #2563EB;
+  --color-primary-light: #3B82F6;
+  --color-primary-dark: #1D4ED8;
+
+  /* Öneri (suggestion) stili için mavi ton */
+  --color-suggestion: #2563EB;
+  --color-suggestion-bg: #EFF6FF;
+
+  /* Metin renkleri */
+  --color-text: #1F2937;
+  --color-text-secondary: #6B7280;
+
+  /* Grid / Ajanda renkleri */
+  --color-grid-line: #E5E7EB;
+  --color-grid-hour: #F3F4F6;
+  --color-grid-today: #DBEAFE;
+
+  /* İyonik değişkenleri (gerekirse override) */
+  --ion-color-primary: #2563EB;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Ajanda Grid Stilleri                                                        */
+/* -------------------------------------------------------------------------- */
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  user-select: none;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-grid-line);
+}
+
+.calendar-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-header__date {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.calendar-view-toggle {
+  display: flex;
+  background: var(--color-grid-hour);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.calendar-view-toggle button {
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.calendar-view-toggle button.active {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Saat ekseni grid gövdesi */
+.calendar-body {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Sol saat sütunu */
+.time-axis {
+  width: 56px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-grid-line);
+}
+
+.time-axis__label {
+  height: 60px; /* her saat hücresi yüksekliği */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0 8px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  position: relative;
+  top: -6px;
+}
+
+/* Gün sütunları konteyneri */
+.day-columns {
+  display: flex;
+  flex: 1;
+}
+
+/* Tek bir gün sütunu — TAMAMI TIKLANABİLİR */
+.day-column {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid var(--color-grid-line);
+  min-width: 80px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.day-column:hover {
+  background-color: var(--color-grid-hour);
+}
+
+.day-column.today {
+  background-color: var(--color-grid-today);
+}
+
+/* Gün başlığı (tarih + gün adı) */
+.day-column__header {
+  text-align: center;
+  padding: 8px 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-grid-line);
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.day-column.today .day-column__header {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Saat çizgileri — SADECE GÖRSEL REFERANS, TIKLANAMAZ */
+.day-column__hour-line {
+  height: 60px;
+  border-bottom: 1px solid var(--color-grid-line);
+  pointer-events: none; /* 🔴 Tıklanabilir olmaması için KRİTİK */
+}
+
+/* Kayıtlı giriş bloğu (grid üzerinde render edilen kısım) */
+.entry-block {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  background: var(--color-primary);
+  opacity: 0.75;
+  border-radius: 4px;
+  z-index: 2;
+  pointer-events: none; /* Bloğa tıklanmaz, sütuna tıklanır */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Günlük Kayıt Kartı (Modal) Stilleri                                         */
+/* -------------------------------------------------------------------------- */
+
+.daily-entry-card {
+  padding: 20px;
+}
+
+.daily-entry-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Alan etiketi */
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+}
+
+/* Zaman giriş alanı */
+.time-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid var(--color-grid-line);
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  transition: border-color 0.15s ease;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* 🟦 Öneri durumu (suggestion) stili */
+.time-input.suggestion {
+  color: var(--color-suggestion);
+  border-color: var(--color-suggestion);
+  background-color: var(--color-suggestion-bg);
+}
+
+/* Öneri ikonu */
+.suggestion-icon {
+  color: var(--color-suggestion);
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+/* Saat seçici ikon butonu */
+.clock-picker-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-grid-hour);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 22px;
+  /* Mobil dokunma hedefi: minimum 44x44px */
+}
+
+/* Mola buton grubu */
+.break-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.break-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 12px 8px;
+  border: 1px solid var(--color-grid-line);
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+  /* Mobil dokunma hedefi */
+  min-height: 44px;
+}
+
+.break-btn.selected {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* 🟦 Mola öneri durumu */
+.break-btn.suggestion-selected {
+  background: var(--color-suggestion-bg);
+  color: var(--color-suggestion);
+  border-color: var(--color-suggestion);
+}
+
+/* Toplam süre özeti */
+.total-display {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--color-grid-hour);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* +1 gün etiketi (gece yarısı geçişi) */
+.next-day-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-primary);
+  background: var(--color-suggestion-bg);
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+}
+
+/* Kart aksiyon butonları */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.card-actions button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  /* Mobil dokunma hedefi */
+  min-height: 48px;
+}
+
+.btn-save {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-cancel {
+  background: var(--color-grid-hour);
+  color: var(--color-text);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Giriş sayfası                                                               */
+/* -------------------------------------------------------------------------- */
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+}
+
+.login-page h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.login-page p {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  margin-bottom: 32px;
+}
+
+.google-signin-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: white;
+  border: 1px solid var(--color-grid-line);
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.15s ease;
+}
+
+.google-signin-btn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Clock-Picker (Saat Seçici) Stilleri                                        */
+/* -------------------------------------------------------------------------- */
+
+.clock-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.clock-picker {
+  background: white;
+  border-radius: 16px;
+  width: 280px;
+  max-height: 80vh;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.clock-picker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-grid-line);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.clock-picker__close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.clock-picker__close:hover {
+  background: var(--color-grid-hour);
+}
+
+.clock-picker__body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 16px;
+}
+
+.clock-picker__column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clock-picker__column-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clock-picker__scroll {
+  height: 196px; /* ~5.5 satır görünür */
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  width: 64px;
+  border: 1px solid var(--color-grid-line);
+  border-radius: 10px;
+  /* Scrollbar gizle (opsiyonel) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-grid-line) transparent;
+}
+
+.clock-picker__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px; /* Mobil dokunma hedefi */
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  scroll-snap-align: center;
+  transition: all 0.1s ease;
+}
+
+.clock-picker__item:hover {
+  background: var(--color-grid-hour);
+}
+
+.clock-picker__item.selected {
+  background: var(--color-primary);
+  color: white;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.clock-picker__separator {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  padding-top: 20px;
+}
+
+.clock-picker__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-grid-line);
+}
+
+.clock-picker__preview {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: var(--color-text);
+}
+
+.clock-picker__confirm {
+  padding: 10px 20px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}

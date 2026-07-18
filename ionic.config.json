@@ -1,0 +1,7 @@
+{
+  "name": "saat-katip",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

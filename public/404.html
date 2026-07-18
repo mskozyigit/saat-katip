@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Saat Katip</title>
+  <script>
+    // GitHub Pages SPA yönlendirmesi:
+    // 404 sayfasında bu script çalışır ve kullanıcıyı ana sayfaya
+    // yönlendirip path bilgisini query param olarak iletir.
+    (function() {
+      var repoName = '/saat-katip';
+      var path = window.location.pathname.replace(repoName, '') || '/';
+      // Hash ve search parametrelerini koru
+      var hash = window.location.hash;
+      // Ana sayfaya yönlendir, path'i redirect paramı olarak ilet
+      var redirectUrl = repoName + '/?redirect=' + encodeURIComponent(path);
+      if (hash) {
+        redirectUrl += '&hash=' + encodeURIComponent(hash);
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
+</head>
+<body>
+  <p>Yönlendiriliyorsunuz...</p>
+</body>
+</html>

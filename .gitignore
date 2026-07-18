@@ -1,0 +1,20 @@
+# Bağımlılıklar
+node_modules/
+dist/
+
+# Ortam değişkenleri (gerçek anahtarları içerir)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db
+
+# Capacitor
+android/
+ios/

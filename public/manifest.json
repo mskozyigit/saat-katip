@@ -1,0 +1,10 @@
+{
+  "name": "Saat Katip",
+  "short_name": "SaatKatip",
+  "description": "Çalışma saati takip uygulaması",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563EB",
+  "icons": []
+}
