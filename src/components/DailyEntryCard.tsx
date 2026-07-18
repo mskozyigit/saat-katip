@@ -138,7 +138,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
         <div className="field-label">Başlangıç {isSugg('start', startTime) && <span className="suggestion-icon">💡 Öneri</span>}</div>
         <div className="time-input-row">
           <input className={`time-input${isSugg('start', startTime) ? ' suggestion' : ''}`}
-            type="text" inputMode="numeric" placeholder="09:00" value={startTime}
+            type="text" inputMode="numeric" placeholder="SS:DD" value={startTime}
             onChange={e => { ht('start'); setStartTime(formatTimeInput(e.target.value)); }}
             onFocus={() => ht('start')} maxLength={5} />
           <button className="clock-picker-btn" onClick={() => { ht('start'); setCpField('start'); }}>🕐</button>
@@ -164,7 +164,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
         </div>
         <div className="time-input-row">
           <input className={`time-input${isSugg('end', endTime) ? ' suggestion' : ''}`}
-            type="text" inputMode="numeric" placeholder="18:00" value={endTime}
+            type="text" inputMode="numeric" placeholder="SS:DD" value={endTime}
             onChange={e => { ht('end'); setEndTime(formatTimeInput(e.target.value)); }}
             onFocus={() => ht('end')} maxLength={5} />
           <button className="clock-picker-btn" onClick={() => { ht('end'); setCpField('end'); }}>🕐</button>
