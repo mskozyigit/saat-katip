@@ -1,8 +1,8 @@
 {
   "DEPLOY_TARGET": {
     "key": "github-pages",
-    "timestamp": "2026-07-18 13:53:55",
-    "auto": true,
-    "label": "GitHub Pages (statik SPA)"
+    "label": "GitHub Pages (statik SPA)",
+    "timestamp": "2026-07-18 14:23:05",
+    "auto": true
   }
 }

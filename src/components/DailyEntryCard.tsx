@@ -90,15 +90,6 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
   const [touched, setTouched] = useState<Set<string>>(() =>
     entry ? new Set(['start', 'end', 'break']) : new Set());
 
-  // Oneriler asenkron yuklendiginde form alanlarini guncelle
-  useEffect(() => {
-    if (isNew && suggestions && !touched.has('start') && !touched.has('end')) {
-      if (suggestions.start?.value) setStartTime(suggestions.start.value as string);
-      if (suggestions.end?.value) setEndTime(suggestions.end.value as string);
-      if (suggestions.break?.value !== undefined) setBreakMinutes(suggestions.break.value as number);
-    }
-  }, [suggestions, isNew]);
-
   const ht = (f: string) => setTouched(p => new Set(p).add(f));
 
   const isNextDay = useMemo(() => {
@@ -260,7 +251,7 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         );
       })}
 
-      {addingNew && <EntryForm date={date} entry={null} suggestions={suggestions}
+      {addingNew && loaded && <EntryForm key="new-form" date={date} entry={null} suggestions={suggestions}
         onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
 
       {!addingNew && (
