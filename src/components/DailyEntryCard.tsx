@@ -183,14 +183,27 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
-        <button
-          className="btn-save md-ripple"
-          onClick={handleSave}
-          disabled={saving || !startTime || !endTime}
-          style={{ width: '100%' }}
-        >
-          {saving ? 'Kaydediliyor...' : 'Kaydet'}
-        </button>
+        {(startTime && endTime) || saving ? (
+          <button
+            className="btn-save md-ripple"
+            onClick={handleSave}
+            disabled={saving}
+            style={{ width: '100%' }}
+          >
+            {saving ? 'Kaydediliyor...' : 'Kaydet'}
+          </button>
+        ) : (
+          <div style={{
+            minHeight: 56,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--md-on-surface-variant)',
+            fontSize: 'var(--md-typescale-body-medium)',
+          }}>
+            Başlangıç ve bitiş saatini girin
+          </div>
+        )}
         <button
           className="btn-cancel md-ripple"
           onClick={onCancel}
