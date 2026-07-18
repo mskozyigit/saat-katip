@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
-import fs from 'fs';
-import path from 'path';
 
 // ============================================================================
 // Saat Katip — E2E Test Paketi
 // ============================================================================
 
-const APP_URL = '/';
+const BASE = process.env.CI ? '/saat-katip' : '';
+const APP_URL = `${BASE}/`;
 
 // ---------------------------------------------------------------------------
 // 1. Login Sayfası
@@ -280,7 +279,7 @@ test.describe('Saat Kadranı', () => {
 // ---------------------------------------------------------------------------
 test.describe('PWA Manifest', () => {
   test('manifest.json erişilebilir ve geçerli olmalı', async ({ page }) => {
-    const response = await page.request.get('/manifest.json');
+    const response = await page.request.get(`${BASE}/manifest.json`);
     expect(response.status()).toBe(200);
 
     const manifest = await response.json();

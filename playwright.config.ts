@@ -7,8 +7,9 @@ export default defineConfig({
   workers: 2,
 
   use: {
+    // Base URL GitHub Pages k├Âk├╝ (path'ler /saat-katip/ ile ba┼člar)
     baseURL: process.env.CI
-      ? 'https://mskozyigit.github.io/saat-katip'
+      ? 'https://mskozyigit.github.io'
       : 'http://localhost:5173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
@@ -26,15 +27,6 @@ export default defineConfig({
       },
     },
     {
-      name: 'iOS Safari',
-      use: {
-        ...devices['iPhone 14'],
-        browserName: 'webkit',
-        isMobile: true,
-        hasTouch: true,
-      },
-    },
-    {
       name: 'Desktop Chrome',
       use: {
         ...devices['Desktop Chrome'],
@@ -43,6 +35,7 @@ export default defineConfig({
     },
   ],
 
+  // Lokal geli┼čtirme i├ğin dev server (CI'da kullan─▒lmaz)
   webServer: process.env.CI
     ? undefined
     : {

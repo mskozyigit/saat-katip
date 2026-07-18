@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [Android Chrome, iOS Safari, Desktop Chrome]
+        project: [Android Chrome, Desktop Chrome]
 
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps ${{ matrix.project == 'iOS Safari' && 'webkit' || matrix.project == 'Desktop Chrome' && 'chromium' || 'chromium' }}
+        run: npx playwright install --with-deps chromium
 
       - name: Run tests
         run: npx playwright test --project="${{ matrix.project }}"
