@@ -1,0 +1,49 @@
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 8 * * 1,4' # Pazartesi ve Perşembe 08:00 UTC
+
+jobs:
+  test:
+    name: 'Playwright — ${{ matrix.project }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [Android Chrome, iOS Safari, Desktop Chrome]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.project == 'iOS Safari' && 'webkit' || matrix.project == 'Desktop Chrome' && 'chromium' || 'chromium' }}
+
+      - name: Run tests
+        run: npx playwright test --project="${{ matrix.project }}"
+        env:
+          CI: true
+
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
