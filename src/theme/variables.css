@@ -6,43 +6,43 @@
    ============================================================================ */
 
 :root {
-  /* === Material 3 Renk Paleti === */
-  --md-primary: #6750A4;
+  /* === Material 3 Renk Paleti — Yeşil + Mavi === */
+  --md-primary: #2E6A1F;
   --md-on-primary: #FFFFFF;
-  --md-primary-container: #EADDFF;
-  --md-on-primary-container: #21005D;
+  --md-primary-container: #B3F5A0;
+  --md-on-primary-container: #032100;
 
-  --md-secondary: #625B71;
+  --md-secondary: #526E4F;
   --md-on-secondary: #FFFFFF;
-  --md-secondary-container: #E8DEF8;
-  --md-on-secondary-container: #1D192B;
+  --md-secondary-container: #D4F6CC;
+  --md-on-secondary-container: #102510;
 
-  --md-tertiary: #7D5260;
+  --md-tertiary: #1A6B8A;
   --md-on-tertiary: #FFFFFF;
-  --md-tertiary-container: #FFD8E4;
-  --md-on-tertiary-container: #31111D;
+  --md-tertiary-container: #C2E8FF;
+  --md-on-tertiary-container: #001F2B;
 
-  --md-error: #B3261E;
+  --md-error: #BA1A1A;
   --md-on-error: #FFFFFF;
-  --md-error-container: #F9DEDC;
-  --md-on-error-container: #410E0B;
+  --md-error-container: #FFDAD6;
+  --md-on-error-container: #410002;
 
-  /* === Material 3 Yüzey Renkleri === */
-  --md-surface: #F7F2FA;
-  --md-on-surface: #1C1B1F;
-  --md-surface-variant: #E7E0EC;
-  --md-on-surface-variant: #49454F;
-  --md-outline: #79747E;
-  --md-outline-variant: #CAC4D0;
+  /* === Material 3 Yüzey Renkleri — Yeşil tonda === */
+  --md-surface: #F6FBF2;
+  --md-on-surface: #1A1C19;
+  --md-surface-variant: #DEE5D8;
+  --md-on-surface-variant: #43483F;
+  --md-outline: #73796E;
+  --md-outline-variant: #C2C9BD;
 
-  --md-surface-container-lowest: #EFE9F4;
-  --md-surface-container-low: #EAE3EF;
-  --md-surface-container: #E5DFEA;
-  --md-surface-container-high: #E0DAE5;
-  --md-surface-container-highest: #DBD5E0;
+  --md-surface-container-lowest: #EEF5EA;
+  --md-surface-container-low: #E8F0E4;
+  --md-surface-container: #E3EBDF;
+  --md-surface-container-high: #DDE6D9;
+  --md-surface-container-highest: #D7E0D4;
 
-  --md-inverse-surface: #313033;
-  --md-inverse-on-surface: #F4EFF4;
+  --md-inverse-surface: #2E312C;
+  --md-inverse-on-surface: #EEF3EA;
 
   /* === Geriye dönük uyumluluk değişkenleri === */
   --color-primary: var(--md-primary);
@@ -168,42 +168,47 @@
 
 /* Koyu tema override'ları */
 [data-theme="dark"] {
-  --md-primary: #D0BCFF;
-  --md-on-primary: #381E72;
-  --md-primary-container: #4F378B;
-  --md-on-primary-container: #EADDFF;
+  --md-primary: #98F587;
+  --md-on-primary: #023800;
+  --md-primary-container: #1C520D;
+  --md-on-primary-container: #B3F5A0;
 
-  --md-surface: #1C1B1F;
-  --md-on-surface: #E6E1E5;
-  --md-surface-variant: #49454F;
-  --md-on-surface-variant: #CAC4D0;
-  --md-outline: #938F99;
-  --md-outline-variant: #49454F;
+  --md-surface: #1A1C19;
+  --md-on-surface: #E2E3DD;
+  --md-surface-variant: #43483F;
+  --md-on-surface-variant: #C2C9BD;
+  --md-outline: #8D9388;
+  --md-outline-variant: #43483F;
 
-  --md-surface-container-lowest: #0F0D13;
-  --md-surface-container-low: #1D1B20;
-  --md-surface-container: #211F26;
-  --md-surface-container-high: #2B2930;
-  --md-surface-container-highest: #36343B;
+  --md-surface-container-lowest: #0E110D;
+  --md-surface-container-low: #1A1C19;
+  --md-surface-container: #1E211D;
+  --md-surface-container-high: #282B27;
+  --md-surface-container-highest: #333632;
 
   --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
   --md-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
 
-  --cp-bg: #1C1B1F;
-  --cp-top-bg: #131216;
-  --cp-ring: #49454F;
-  --cp-text: #E6E1E5;
-  --cp-text-dim: #938F99;
-  --cp-accent: #D0BCFF;
-  --cp-accent-text: #381E72;
-  --cp-hand: #D0BCFF;
-  --cp-btn-ok-bg: #D0BCFF;
-  --cp-btn-ok-text: #381E72;
+  --cp-bg: #1A1C19;
+  --cp-top-bg: #0E110D;
+  --cp-ring: #43483F;
+  --cp-text: #E2E3DD;
+  --cp-text-dim: #8D9388;
+  --cp-accent: #98F587;
+  --cp-accent-text: #023800;
+  --cp-hand: #98F587;
+  --cp-btn-ok-bg: #98F587;
+  --cp-btn-ok-text: #023800;
 }
 
 /* ========================================================================
    Temel eleman stilleri
    ======================================================================== */
+
+/* Sayfa ve body arkaplanı — asla beyaz olmasın */
+html, body, ion-app {
+  background: var(--md-surface-container-lowest);
+}
 
 /* Genel sayfa arkaplanı */
 ion-content {
@@ -212,12 +217,13 @@ ion-content {
 
 /* Toolbar — 56dp yükseklik */
 ion-toolbar {
-  --background: var(--md-surface);
+  --background: var(--md-surface-container-lowest);
   --color: var(--md-on-surface);
   --border-style: none;
   --min-height: 56px;
   --padding-top: 0;
   --padding-bottom: 0;
+  background: var(--md-surface-container-lowest);
 }
 
 ion-header {
