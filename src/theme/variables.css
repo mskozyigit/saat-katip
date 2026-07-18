@@ -28,18 +28,18 @@
   --md-on-error-container: #410E0B;
 
   /* === Material 3 Yüzey Renkleri === */
-  --md-surface: #FEF7FF;
+  --md-surface: #F7F2FA;
   --md-on-surface: #1C1B1F;
   --md-surface-variant: #E7E0EC;
   --md-on-surface-variant: #49454F;
   --md-outline: #79747E;
   --md-outline-variant: #CAC4D0;
 
-  --md-surface-container-lowest: #FEF7FF;
-  --md-surface-container-low: #F7F2FA;
-  --md-surface-container: #F3EDF7;
-  --md-surface-container-high: #ECE6F0;
-  --md-surface-container-highest: #E6E0E9;
+  --md-surface-container-lowest: #EFE9F4;
+  --md-surface-container-low: #EAE3EF;
+  --md-surface-container: #E5DFEA;
+  --md-surface-container-high: #E0DAE5;
+  --md-surface-container-highest: #DBD5E0;
 
   --md-inverse-surface: #313033;
   --md-inverse-on-surface: #F4EFF4;
