@@ -118,8 +118,8 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
         </div>
         <span className="calendar-header__date">
           {days.length === 1
-            ? days[0].toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })
-            : `${days[0].toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })} — ${days[days.length - 1].toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' })}`}
+            ? days[0].toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })
+            : `${days[0].toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })} — ${days[days.length - 1].toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}`}
         </span>
         <div className="calendar-view-toggle">
           {(['1day', '3day', '7day'] as CalendarViewMode[]).map((mode) => (

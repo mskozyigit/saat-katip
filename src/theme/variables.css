@@ -942,6 +942,11 @@ ion-fab-button {
   /* Tarih aralığını ve toggle'ı ortala */
   .calendar-header {
     justify-content: center;
+    padding: 8px 12px;
+  }
+
+  .calendar-header__date {
+    font-size: var(--md-typescale-title-small);
   }
   .circular-clock {
     width: 100%;
