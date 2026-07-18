@@ -132,9 +132,6 @@ export default function HomePage() {
             <IonTitle>
               Günlük Kayıt {dayEntries.length > 0 ? `(${dayEntries.length})` : ''}
             </IonTitle>
-            <IonButtons slot="end">
-              <IonButton onClick={handleCloseModal}>Kapat</IonButton>
-            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <div style={{

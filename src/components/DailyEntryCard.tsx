@@ -184,7 +184,7 @@ function EntryForm({ date, entry, suggestions, onSave, onCancel, saving }: {
 
       <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
         <button className="btn-cancel md-ripple" onClick={onCancel} style={{ flex: 1 }}>İptal</button>
-        <button className="btn-save md-ripple" onClick={handleSave} disabled={saving || !startTime || !endTime} style={{ flex: 1 }}>
+        <button className="btn-save md-ripple" onClick={handleSave} disabled={saving || !startTime || !endTime} style={{ flex: 1.5 }}>
           {saving ? '...' : 'Kaydet'}
         </button>
       </div>
@@ -280,10 +280,16 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
 
       {!addingNew && (
-        <button onClick={() => setAddingNew(true)} className="add-entry-btn md-ripple">
-          <span style={{ fontSize: 22, marginRight: 8, fontWeight: 300 }}>+</span>
-          {entries.length === 0 ? 'Çalışma Ekle' : 'Yeni Kayıt Ekle'}
-        </button>
+        <>
+          <button onClick={() => setAddingNew(true)} className="add-entry-btn md-ripple">
+            <span style={{ fontSize: 22, marginRight: 8, fontWeight: 300 }}>+</span>
+            {entries.length === 0 ? 'Çalışma Ekle' : 'Yeni Kayıt Ekle'}
+          </button>
+
+          <div className="card-actions" style={{ marginTop: 16 }}>
+            <button className="btn-cancel md-ripple" onClick={onClose}>İptal</button>
+          </div>
+        </>
       )}
     </div>
   );
