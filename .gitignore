@@ -18,3 +18,9 @@ Thumbs.db
 # Capacitor
 android/
 ios/
+
+# Test artifacts
+test-results/
+test-output.json
+test-output.txt
+playwright-report/
