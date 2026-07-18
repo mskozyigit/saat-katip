@@ -129,6 +129,7 @@ export default function HomePage() {
       {selectedDate !== null && (
       <IonModal
         isOpen={true}
+        onIonModalDidDismiss={() => setSelectedDate(null)}
         initialBreakpoint={0.9}
         breakpoints={[0, 0.6, 0.9]}
         handle={false}
