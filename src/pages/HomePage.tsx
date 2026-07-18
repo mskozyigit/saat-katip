@@ -14,10 +14,13 @@ import {
   IonButton,
   IonIcon,
   IonSpinner,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
-import { logOutOutline } from 'ionicons/icons';
+import { logOutOutline, addOutline } from 'ionicons/icons';
 import CalendarGrid from '../components/CalendarGrid';
 import DailyEntryCard from '../components/DailyEntryCard';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { useWorkEntries } from '../hooks/useWorkEntries';
 import { useAuth } from '../hooks/useAuth';
 import { useServerTime } from '../hooks/useServerTime';
@@ -113,6 +116,13 @@ export default function HomePage() {
         ) : (
           <CalendarGrid entries={entries} onDayClick={handleDayClick} />
         )}
+
+        {/* Çalışma Ekle butonu (FAB) */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={() => handleDayClick(serverNow.toISOString().slice(0, 10))}>
+            <IonIcon icon={addOutline} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
 
       {/* Günlük Kayıt Modalı */}
@@ -127,20 +137,22 @@ export default function HomePage() {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent className="ion-padding">
           {modalLoading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
               <IonSpinner />
             </div>
-          ) : selectedDate ? (
-            <DailyEntryCard
-              date={selectedDate}
-              entries={dayEntries}
-              onSave={handleSave}
-              onDelete={handleDelete}
-              onClose={handleCloseModal}
-            />
-          ) : null}
+          ) : (
+            <ErrorBoundary>
+              <DailyEntryCard
+                date={selectedDate!}
+                entries={dayEntries}
+                onSave={handleSave}
+                onDelete={handleDelete}
+                onClose={handleCloseModal}
+              />
+            </ErrorBoundary>
+          )}
         </IonContent>
       </IonModal>
     </IonPage>

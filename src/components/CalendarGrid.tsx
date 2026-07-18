@@ -140,11 +140,17 @@ export default function CalendarGrid({ entries, onDayClick }: CalendarGridProps)
               <div
                 key={dateStr}
                 className={`day-column${isToday ? ' today' : ''}`}
-                onClick={() => onDayClick(dateStr)}
+                onClick={(e) => {
+                  // Sadece doğrudan sütuna tıklanınca çalışsın (entry blokları hariç)
+                  const target = e.target as HTMLElement;
+                  if (target.closest('.entry-block')) return;
+                  onDayClick(dateStr);
+                }}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter') onDayClick(dateStr); }}
                 aria-label={`${dateStr} günü kaydı`}
+                title="Bu güne kayıt eklemek için tıklayın"
               >
                 {/* Gün başlığı */}
                 <div className="day-column__header">

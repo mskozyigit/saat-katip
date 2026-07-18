@@ -1,6 +1,4 @@
 Set-Location c:\Users\mskoz\projects\saat-katip
-$env:Path = "C:\Program Files\nodejs;" + $env:Path
-git add -A
-git commit -m "fix: timezone, serverTime, CSS, lint, type-safety"
-git push
+git remote set-url origin https://github.com/mskozyigit/saat-katip.git
+git remote -v
 Write-Host "DONE" -ForegroundColor Green

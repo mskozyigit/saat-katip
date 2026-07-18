@@ -229,13 +229,29 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
     await onDelete(id);
   };
 
-  const dateDisplay = new Date(date + 'T00:00:00').toLocaleDateString('tr-TR', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-  });
+  const dateDisplay = (() => {
+    try {
+      return new Date(date + 'T00:00:00').toLocaleDateString('tr-TR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+      });
+    } catch {
+      return date;
+    }
+  })();
 
   return (
     <div className="daily-entry-card">
       <h3>{dateDisplay}</h3>
+
+      {entries.length === 0 && !addingNew && (
+        <div style={{
+          textAlign: 'center', padding: '24px 16px', color: '#9CA3AF',
+          fontSize: 14, lineHeight: 1.6,
+        }}>
+          Bu güne ait henüz bir kayıt yok.<br />
+          Aşağıdaki butona tıklayarak yeni kayıt ekleyebilirsiniz.
+        </div>
+      )}
 
       {entries.map(entry => {
         const t = extractTime(entry);
@@ -270,10 +286,10 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
         onSave={handleSave} onCancel={() => setAddingNew(false)} saving={saving} />}
 
       {!addingNew && (
-        <button onClick={() => setAddingNew(true)} style={{
-          width: '100%', padding: 14, border: '2px dashed #D1D5DB', borderRadius: 10,
-          background: 'transparent', fontSize: 15, fontWeight: 600, color: '#2563EB', cursor: 'pointer', marginTop: 8,
-        }}>+ Yeni Kayıt Ekle</button>
+        <button onClick={() => setAddingNew(true)} className="add-entry-btn">
+          <span style={{ fontSize: 22, marginRight: 8, fontWeight: 300 }}>+</span>
+          Çalışma Ekle
+        </button>
       )}
 
       <div className="card-actions" style={{ marginTop: 16 }}>
