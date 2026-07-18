@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   // GitHub Pages'te yayınlanırken base path: '/saat-katip/'
   // Lokal geliştirme için '/' olarak değiştirilebilir
-  base: process.env.NODE_ENV === 'production' ? '/saat-katip/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/hours/' : '/',
   build: {
     outDir: 'dist',
     sourcemap: false,

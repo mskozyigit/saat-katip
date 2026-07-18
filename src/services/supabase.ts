@@ -52,7 +52,7 @@ export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKe
  */
 export async function signInWithGoogle(): Promise<void> {
   const redirectTo = import.meta.env.PROD
-    ? 'https://kullaniciadi.github.io/saat-katip/' // TODO: gerçek URL ile değiştir
+    ? 'https://mskozyigit.github.io/hours/' // TODO: gerçek URL ile değiştir
     : window.location.origin;
 
   const { error } = await supabase.auth.signInWithOAuth({
