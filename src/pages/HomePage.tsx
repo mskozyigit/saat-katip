@@ -16,7 +16,7 @@ import {
   IonFab,
   IonFabButton,
 } from '@ionic/react';
-import { logOutOutline, addOutline } from 'ionicons/icons';
+import { logOutOutline } from 'ionicons/icons';
 import CalendarGrid from '../components/CalendarGrid';
 import DailyEntryCard from '../components/DailyEntryCard';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -142,7 +142,7 @@ export default function HomePage() {
         {/* Çalışma Ekle butonu (FAB) */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton onClick={() => handleDayClick(serverNow.toISOString().slice(0, 10))}>
-            <IonIcon icon={addOutline} />
+            <span className="fab-plus">+</span>
           </IonFabButton>
         </IonFab>
       </IonContent>
