@@ -27,13 +27,20 @@ testWithAuth.describe('Ana Takvim (auth)', () => {
   testWithAuth('takvim başlığı görünmeli', async ({ authenticatedPage }) => {
     const page = authenticatedPage;
 
-    // Görünüm toggle butonları
+    // Görünüm toggle butonları (tüm viewport'larda görünür)
     await expect(page.locator('button:has-text("1 Gün")')).toBeVisible();
     await expect(page.locator('button:has-text("3 Gün")')).toBeVisible();
     await expect(page.locator('button:has-text("1 Hafta")')).toBeVisible();
 
-    // Bugün butonu
-    await expect(page.locator('button:has-text("Bugün")')).toBeVisible();
+    // Bugün butonu — mobilde CSS ile gizlenir, masaüstünde görünür
+    const bugunBtn = page.locator('button:has-text("Bugün")');
+    const isMobile = page.viewportSize()?.width !== undefined && page.viewportSize()!.width < 600;
+    if (isMobile) {
+      // Mobilde gizli olması beklenir
+      await expect(bugunBtn).not.toBeVisible();
+    } else {
+      await expect(bugunBtn).toBeVisible();
+    }
   });
 
   testWithAuth('gün sütununa tıklayınca overlay açılmalı', async ({ authenticatedPage }) => {
