@@ -285,10 +285,6 @@ export default function DailyEntryCard({ date, entries, onSave, onDelete, onClos
           {entries.length === 0 ? 'Çalışma Ekle' : 'Yeni Kayıt Ekle'}
         </button>
       )}
-
-      <div className="card-actions" style={{ marginTop: 16 }}>
-        <button className="btn-cancel md-ripple" onClick={onClose}>Kapat</button>
-      </div>
     </div>
   );
 }

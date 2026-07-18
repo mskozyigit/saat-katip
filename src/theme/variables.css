@@ -536,6 +536,13 @@ ion-fab-button {
   color: var(--md-on-primary);
 }
 
+.btn-save:disabled {
+  background: var(--md-on-surface);
+  opacity: 0.12;
+  color: var(--md-on-surface);
+  cursor: default;
+}
+
 .btn-cancel {
   background: var(--md-surface-container-high);
   color: var(--md-on-surface-variant);
