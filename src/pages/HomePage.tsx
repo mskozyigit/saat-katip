@@ -129,8 +129,8 @@ export default function HomePage() {
       <IonModal
         isOpen={selectedDate !== null}
         onDidDismiss={handleCloseModal}
-        initialBreakpoint={0.65}
-        breakpoints={[0, 0.5, 0.65, 0.9]}
+        initialBreakpoint={0.9}
+        breakpoints={[0, 0.6, 0.9]}
         handle={false}
       >
         <IonHeader className="ion-no-border">

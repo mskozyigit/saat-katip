@@ -241,6 +241,7 @@ ion-modal ion-header {
 
 ion-modal .ion-page {
   background: var(--md-surface-container-lowest);
+  overflow-y: auto !important;
 }
 
 ion-title {
